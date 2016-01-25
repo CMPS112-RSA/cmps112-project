@@ -5,6 +5,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.6)
 PROJECT(cmps112-rsa C)
 
 SET(srcs
+    base64.c
     getopt.c
     rsa.c
     main.c
