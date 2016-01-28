@@ -1,4 +1,6 @@
-// $Id: relops.h,v 1.1 2015-07-02 15:52:45-07 - - $
+/*
+ * This file comes from my solution to CMPS 109 W16's asg1.
+ */
 
 //
 // Assuming that for any given type T, there are operators
@@ -11,7 +13,7 @@
 #ifndef __REL_OPS_H__
 #define __REL_OPS_H__
 
-#ifndef UBIGINT_CPP
+#ifndef __cplusplus
 #error Do not include this from a C file!
 #endif
 

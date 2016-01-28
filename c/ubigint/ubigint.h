@@ -41,6 +41,30 @@ int print_ubigint(
     ubigint_handle_t num
 );
 
+int ubigint_add(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+);
+
+int ubigint_subtract(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+);
+
+int ubigint_multiply(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+);
+
+int ubigint_divide(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+);
+
 int ubigint_modulus(
     ubigint_handle_t num1,
     ubigint_handle_t num2,

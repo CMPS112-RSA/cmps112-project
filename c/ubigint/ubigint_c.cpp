@@ -1,5 +1,3 @@
-#define UBIGINT_CPP
-
 #include "libfns.hpp"
 #include "ubigint.hpp"
 
@@ -81,6 +79,46 @@ int print_ubigint(
 ) {
     CPP_TO_C(
         std::cout << num->cpp << std::endl;
+    )
+}
+
+int ubigint_add(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+) {
+    CPP_TO_C(
+        result->cpp = num1->cpp + num2->cpp;
+    )
+}
+
+int ubigint_subtract(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+) {
+    CPP_TO_C(
+        result->cpp = num1->cpp - num2->cpp;
+    )
+}
+
+int ubigint_multiply(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+) {
+    CPP_TO_C(
+        result->cpp = num1->cpp * num2->cpp;
+    )
+}
+
+int ubigint_divide(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+) {
+    CPP_TO_C(
+        result->cpp = num1->cpp / num2->cpp;
     )
 }
 

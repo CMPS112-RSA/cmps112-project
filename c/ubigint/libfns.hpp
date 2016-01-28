@@ -1,7 +1,11 @@
+/*
+ * This file comes from my solution to CMPS 109 W16's asg1.
+ */
+
 #ifndef INCLUDED_UBIGINT_LIBFNS_HPP
 #define INCLUDED_UBIGINT_LIBFNS_HPP
 
-#ifndef UBIGINT_CPP
+#ifndef __cplusplus
 #error Do not include this from a C file!
 #endif
 

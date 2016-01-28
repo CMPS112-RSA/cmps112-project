@@ -1,4 +1,6 @@
-#define UBIGINT_CPP
+/*
+ * This file comes from my solution to CMPS 109 W16's asg1.
+ */
 
 #include "libfns.hpp"
 

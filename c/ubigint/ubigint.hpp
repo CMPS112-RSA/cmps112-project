@@ -1,9 +1,11 @@
-// $Id: ubigint.h,v 1.9 2015-07-03 14:46:41-07 - - $
+/*
+ * This file comes from my solution to CMPS 109 W16's asg1.
+ */
 
 #ifndef __UBIGINT_H__
 #define __UBIGINT_H__
 
-#ifndef UBIGINT_CPP
+#ifndef __cplusplus
 #error Do not include this from a C file!
 #endif
 
