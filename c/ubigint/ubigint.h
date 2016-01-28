@@ -28,6 +28,10 @@ int free_ubigint(
     ubigint_handle_t* handle_ptr
 );
 
+int print_ubigint(
+    ubigint_handle_t num
+);
+
 int ubigint_modulus(
     ubigint_handle_t num1,
     ubigint_handle_t num2,

@@ -9,6 +9,8 @@ typedef struct {
 
 #include "ubigint.h"
 
+#include <iostream>
+
 #define CPP_TO_C(...) \
     try { __VA_ARGS__ } \
     catch(...) { \
@@ -50,6 +52,14 @@ int free_ubigint(
     CPP_TO_C(
         delete (*handle_ptr);
         (*handle_ptr) = NULL;
+    )
+}
+
+int print_ubigint(
+    ubigint_handle_t num
+) {
+    CPP_TO_C(
+        std::cout << num->cpp << std::endl;
     )
 }
 
