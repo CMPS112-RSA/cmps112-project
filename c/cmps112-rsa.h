@@ -2,26 +2,27 @@
 #define CMPS112_RSA_H
 
 #include <stdint.h>
+#include <stdlib.h>
+
+#include "ubigint/ubigint.h"
 
 #define RSA_KEY_SIZE_BITS 2048
 #define RSA_KEY_SIZE_BYTES (RSA_KEY_SIZE_BITS / 8)
 
-#pragma pack(push,1)
-typedef struct {
-    uint8_t key[RSA_KEY_SIZE_BYTES];
-} rsa_key_t;
-#pragma pack(pop)
-
 void encrypt_message(
-    rsa_key_t* key,
+    ubigint_handle_t key_n,
+    ubigint_handle_t key_e,
     uint8_t* message_in,
-    uint8_t* message_out
+    uint8_t* message_out,
+    size_t message_len
 );
 
 void decrypt_message(
-    rsa_key_t* key,
+    ubigint_handle_t key_n,
+    ubigint_handle_t key_d,
     uint8_t* message_in,
-    uint8_t* message_out
+    uint8_t* message_out,
+    size_t message_len
 );
 
 #endif /* CMPS112_RSA_H */

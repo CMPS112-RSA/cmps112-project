@@ -11,8 +11,8 @@ ADD_SUBDIRECTORY(ubigint)
 
 SET(srcs
     base64.c
+    crypt.c
     getopt.c
-    rsa.c
     main.c
 )
 ADD_EXECUTABLE(cmps112-rsa-c ${srcs})
