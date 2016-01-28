@@ -14,10 +14,6 @@ int main(int argc, char* argv[]) {
     const char* output_filename = "";
     bool encrypt = false;
 
-    opengpg_file_to_key(
-        key_filename, &rsa_key
-    );
-
     if(encrypt) {
     } else {
     }

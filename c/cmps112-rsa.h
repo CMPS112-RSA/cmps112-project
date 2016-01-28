@@ -12,11 +12,6 @@ typedef struct {
 } rsa_key_t;
 #pragma pack(pop)
 
-void opengpg_file_to_key(
-    const char* filename,
-    rsa_key_t* key_out
-);
-
 void encrypt_message(
     rsa_key_t* key,
     uint8_t* message_in,
