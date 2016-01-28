@@ -6,22 +6,21 @@
 
 #include "ubigint/ubigint.h"
 
-#define RSA_KEY_SIZE_BITS 2048
-#define RSA_KEY_SIZE_BYTES (RSA_KEY_SIZE_BITS / 8)
+typedef uint8_t* buffer_t;
 
 void encrypt_message(
     ubigint_handle_t key_n,
     ubigint_handle_t key_e,
-    uint8_t* message_in,
-    uint8_t* message_out,
+    buffer_t message_in,
+    buffer_t* message_out,
     size_t message_len
 );
 
 void decrypt_message(
     ubigint_handle_t key_n,
     ubigint_handle_t key_d,
-    uint8_t* message_in,
-    uint8_t* message_out,
+    buffer_t message_in,
+    buffer_t* message_out,
     size_t message_len
 );
 
