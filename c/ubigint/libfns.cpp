@@ -15,7 +15,6 @@ ubigint upow(const ubigint& base_arg, const ubigint& exponent_arg) {
     for(ubigint i = U_ONE; i <= exponent_arg; (i = i + 1)) {
         ret = ret * base_arg;
     }
-    std::cout << "Done" << std::endl;
     return ret;
 }
 

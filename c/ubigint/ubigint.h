@@ -1,6 +1,9 @@
 #ifndef UBIGINT_H
 #define UBIGINT_H
 
+#include <stdint.h>
+#include <stdlib.h>
+
 #ifdef __cplusplus
 extern "C" {
 #else
@@ -22,6 +25,12 @@ int new_ubigint_from_num(
 int new_ubigint_from_string(
     ubigint_handle_t* handle_ptr,
     const char* str
+);
+
+int new_ubigint_from_binary(
+    ubigint_handle_t* handle_ptr,
+    uint8_t* binary,
+    size_t num_bytes
 );
 
 int free_ubigint(

@@ -46,6 +46,23 @@ int new_ubigint_from_string(
     )
 }
 
+static const ubigint _256(256);
+
+int new_ubigint_from_binary(
+    ubigint_handle_t* handle_ptr,
+    uint8_t* binary,
+    size_t num_bytes
+) {
+    CPP_TO_C(
+        (*handle_ptr) = new ubigint_t;
+
+        for(size_t i = 0; i < num_bytes; i++) {
+            ubigint mult = upow(_256, ubigint(i));
+            (*handle_ptr)->cpp = (*handle_ptr)->cpp + (mult * ubigint(binary[(num_bytes-1)-i]));
+        }
+    )
+}
+
 int free_ubigint(
     ubigint_handle_t* handle_ptr
 ) {
