@@ -11,7 +11,8 @@ void encrypt_message(
     buffer_t* message_out,
     size_t message_len
 ) {
-    (*message_out) = calloc(message_len, 1);
+    buffer_t intermediate = calloc(message_len, 1);
+
     ubigint_handle_t powop, input_byte, output_byte;
     new_ubigint(&powop);
     new_ubigint(&output_byte);
@@ -22,12 +23,15 @@ void encrypt_message(
         ubigint_modulus(powop, key_n, output_byte);
         uint64_t output_ulong = 0;
         ubigint_to_ulong(output_byte, &output_ulong);
-        (*message_out)[i] = (uint8_t)output_ulong;
+        intermediate[i] = (uint8_t)output_ulong;
 
         free_ubigint(&input_byte);
     }
     printf("encode len: %d\n", Base64encode_len((int)message_len));
+    (*message_out) = calloc(Base64encode_len((int)message_len), 1);
+    Base64encode((char*)(*message_out), (const char*)intermediate, message_len);
 
+    free(intermediate);
     free_ubigint(&powop);
     free_ubigint(&output_byte);
 }
@@ -39,7 +43,7 @@ void decrypt_message(
     buffer_t* message_out,
     size_t message_len
 ) {
-    (*message_out) = calloc(message_len, 1);
+    buffer_t intermediate = calloc(message_len, 1);
     ubigint_handle_t powop, input_byte, output_byte;
     new_ubigint(&powop);
     new_ubigint(&output_byte);
@@ -50,12 +54,15 @@ void decrypt_message(
         ubigint_modulus(powop, key_n, output_byte);
         uint64_t output_ulong = 0;
         ubigint_to_ulong(output_byte, &output_ulong);
-        (*message_out)[i] = (uint8_t)output_ulong;
+        intermediate[i] = (uint8_t)output_ulong;
 
         free_ubigint(&input_byte);
     }
-    printf("decode len: %d\n", Base64decode_len((const char*)message_out));
+    printf("decode len: %d\n", Base64decode_len((const char*)intermediate));
+    (*message_out) = calloc(Base64decode_len((const char*)intermediate), 1);
+    Base64decode((char*)(*message_out), (const char*)intermediate);
 
+    free(intermediate);
     free_ubigint(&powop);
     free_ubigint(&output_byte);
 }
