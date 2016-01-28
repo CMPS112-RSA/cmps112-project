@@ -11,6 +11,10 @@
 #ifndef __REL_OPS_H__
 #define __REL_OPS_H__
 
+#ifndef UBIGINT_CPP
+#error Do not include this from a C file!
+#endif
+
 template <typename value>
 inline bool operator!= (const value &left, const value &right) {
    return not (left == right); 

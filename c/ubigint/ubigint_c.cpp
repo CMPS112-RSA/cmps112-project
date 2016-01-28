@@ -1,5 +1,6 @@
 #define UBIGINT_CPP
 
+#include "libfns.hpp"
 #include "ubigint.hpp"
 
 typedef struct {
@@ -8,31 +9,66 @@ typedef struct {
 
 #include "ubigint.h"
 
-void new_ubigint(
+#define CPP_TO_C(...) \
+    try { __VA_ARGS__ } \
+    catch(...) { \
+        return 1; \
+    } \
+    return 0;
+
+int new_ubigint(
     ubigint_handle_t* handle_ptr
 ) {
-    (*handle_ptr) = new ubigint_t;
+    CPP_TO_C(
+        (*handle_ptr) = new ubigint_t;
+    )
 }
 
-void new_ubigint_from_num(
+int new_ubigint_from_num(
     ubigint_handle_t* handle_ptr,
     unsigned long num
 ) {
-    (*handle_ptr) = new ubigint_t;
-    (*handle_ptr)->cpp = ubigint(num);
+    CPP_TO_C(
+        (*handle_ptr) = new ubigint_t;
+        (*handle_ptr)->cpp = ubigint(num);
+    )
 }
 
-void new_ubigint_from_string(
+int new_ubigint_from_string(
     ubigint_handle_t* handle_ptr,
     const char* str
 ) {
-    (*handle_ptr) = new ubigint_t;
-    (*handle_ptr)->cpp = ubigint(str);
+    CPP_TO_C(
+        (*handle_ptr) = new ubigint_t;
+        (*handle_ptr)->cpp = ubigint(str);
+    )
 }
 
-void free_ubigint(
+int free_ubigint(
     ubigint_handle_t* handle_ptr
 ) {
-    delete (*handle_ptr);
-    (*handle_ptr) = NULL;
+    CPP_TO_C(
+        delete (*handle_ptr);
+        (*handle_ptr) = NULL;
+    )
+}
+
+int ubigint_modulus(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+) {
+    CPP_TO_C(
+        result->cpp = num1->cpp % num2->cpp;
+    )
+}
+
+int ubigint_pow(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+) {
+    CPP_TO_C(
+        result->cpp = upow(num1->cpp, num2->cpp);
+    )
 }

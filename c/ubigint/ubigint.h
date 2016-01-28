@@ -10,22 +10,34 @@ typedef struct ubigint_t ubigint_t;
 
 typedef ubigint_t* ubigint_handle_t;
 
-void new_ubigint(
+int new_ubigint(
     ubigint_handle_t* handle_ptr
 );
 
-void new_ubigint_from_num(
+int new_ubigint_from_num(
     ubigint_handle_t* handle_ptr,
     unsigned long num
 );
 
-void new_ubigint_from_string(
+int new_ubigint_from_string(
     ubigint_handle_t* handle_ptr,
     const char* str
 );
 
-void free_ubigint(
+int free_ubigint(
     ubigint_handle_t* handle_ptr
+);
+
+int ubigint_modulus(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
+);
+
+int ubigint_pow(
+    ubigint_handle_t num1,
+    ubigint_handle_t num2,
+    ubigint_handle_t result
 );
 
 #ifdef __cplusplus
