@@ -2,6 +2,7 @@
  * This file comes from my solution to CMPS 109 W16's asg1.
  */
 
+#include <cmath>
 #include <cstdlib>
 #include <exception>
 #include <sstream>
@@ -23,6 +24,15 @@ ubigint::ubigint (const string& that) {
     for(string::const_reverse_iterator rit = that.rbegin(); rit != that.rend(); ++rit) {
         ubig_value.push_back(udigit_t(*rit - '0'));
     }
+}
+
+uint64_t ubigint::to_ulong() const {
+    uint64_t ret = 0;
+    for(size_t i = 0; i < ubig_value.size(); i++) {
+        std::cout << i << std::endl;
+        ret += ubig_value[i] * pow(10,i);
+    }
+    return ret;
 }
 
 ubigint ubigint::operator+ (const ubigint& that) const {

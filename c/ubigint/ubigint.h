@@ -41,6 +41,12 @@ int print_ubigint(
     ubigint_handle_t num
 );
 
+// No checks for overflow
+int ubigint_to_ulong(
+    ubigint_handle_t num_in,
+    uint64_t* num_out
+);
+
 int ubigint_add(
     ubigint_handle_t num1,
     ubigint_handle_t num2,

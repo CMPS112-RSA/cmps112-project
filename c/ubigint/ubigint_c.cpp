@@ -82,6 +82,15 @@ int print_ubigint(
     )
 }
 
+int ubigint_to_ulong(
+    ubigint_handle_t num_in,
+    uint64_t* num_out
+) {
+    CPP_TO_C(
+        *num_out = num_in->cpp.to_ulong();
+    )
+}
+
 int ubigint_add(
     ubigint_handle_t num1,
     ubigint_handle_t num2,

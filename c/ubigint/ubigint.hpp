@@ -30,11 +30,13 @@ class ubigint {
       quot_rem divide (const ubigint&) const;
       void multiply_by_2();
       void divide_by_2();
+
    public:
 
       ubigint() = default; // Need default ctor as well.
       ubigint (unsigned long);
       ubigint (const string&);
+      uint64_t to_ulong() const;
 
       ubigint operator+ (const ubigint&) const;
       ubigint operator- (const ubigint&) const;
