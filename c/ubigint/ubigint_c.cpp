@@ -31,6 +31,7 @@ int new_ubigint_from_num(
     CPP_TO_C(
         (*handle_ptr) = new ubigint_t;
         (*handle_ptr)->cpp = ubigint(num);
+        std::cout << "new_ubigint_from_num: " << (*handle_ptr)->cpp << std::endl;
     )
 }
 
@@ -88,6 +89,7 @@ int ubigint_to_ulong(
 ) {
     CPP_TO_C(
         *num_out = num_in->cpp.to_ulong();
+        std::cout << "ubigint_to_ulong: " << (*num_out) << std::endl;
     )
 }
 
@@ -138,6 +140,10 @@ int ubigint_modulus(
 ) {
     CPP_TO_C(
         result->cpp = num1->cpp % num2->cpp;
+        std::cout << "modulus" << std::endl;
+        std::cout << "num1 = " << num1->cpp << std::endl;
+        std::cout << "num2 = " << num2->cpp << std::endl;
+        std::cout << "result = " << result->cpp << std::endl << std::endl;
     )
 }
 
@@ -148,5 +154,6 @@ int ubigint_pow(
 ) {
     CPP_TO_C(
         result->cpp = upow(num1->cpp, num2->cpp);
+        std::cout << "pow: " << result->cpp << std::endl;
     )
 }

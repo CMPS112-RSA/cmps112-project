@@ -29,7 +29,6 @@ ubigint::ubigint (const string& that) {
 uint64_t ubigint::to_ulong() const {
     uint64_t ret = 0;
     for(size_t i = 0; i < ubig_value.size(); i++) {
-        std::cout << i << std::endl;
         ret += ubig_value[i] * pow(10,i);
     }
     return ret;
