@@ -46,8 +46,11 @@ int new_ubigint_from_string(
     )
 }
 
-static const ubigint _256(256);
+static const ubigint _SHIFT_TWO_BYTES(65536);
 
+/*
+ * By testing, doing it 2 bytes at a time is faster than either 1 or 4 at a time.
+ */
 int new_ubigint_from_binary(
     ubigint_handle_t* handle_ptr,
     uint8_t* binary,
@@ -56,9 +59,10 @@ int new_ubigint_from_binary(
     CPP_TO_C(
         (*handle_ptr) = new ubigint_t;
 
-        for(size_t i = 0; i < num_bytes; i++) {
-            ubigint mult = upow(_256, ubigint(i));
-            (*handle_ptr)->cpp = (*handle_ptr)->cpp + (mult * ubigint(binary[(num_bytes-1)-i]));
+        uint16_t* bin = (uint16_t*)binary;
+        for(size_t i = 0; i < (num_bytes/2); i++) {
+            ubigint mult = upow(_SHIFT_TWO_BYTES, ubigint(i));
+            (*handle_ptr)->cpp = (*handle_ptr)->cpp + (mult * ubigint(bin[((num_bytes/2)-1)-i]));
         }
     )
 }
