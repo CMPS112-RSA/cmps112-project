@@ -26,6 +26,7 @@ void encrypt_message(
 
         free_ubigint(&input_byte);
     }
+    printf("encode len: %d\n", Base64encode_len((int)message_len));
 
     free_ubigint(&powop);
     free_ubigint(&output_byte);
@@ -53,6 +54,7 @@ void decrypt_message(
 
         free_ubigint(&input_byte);
     }
+    printf("decode len: %d\n", Base64decode_len((const char*)message_out));
 
     free_ubigint(&powop);
     free_ubigint(&output_byte);
