@@ -1,4 +1,4 @@
-// $Id: ubigint.cpp,v 1.8 2015-07-03 14:46:41-07 - - $
+#define UBIGINT_CPP
 
 #include <cstdlib>
 #include <exception>

@@ -1,4 +1,5 @@
 #include "cmps112-rsa.h"
+#include "ubigint/ubigint.h"
 
 #include <stdbool.h>
 #include <stdio.h>

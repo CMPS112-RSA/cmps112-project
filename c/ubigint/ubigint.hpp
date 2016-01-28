@@ -3,10 +3,15 @@
 #ifndef __UBIGINT_H__
 #define __UBIGINT_H__
 
+#ifndef UBIGINT_CPP
+#error Do not include this from a C file!
+#endif
+
 #include <exception>
 #include <iostream>
 #include <limits>
 #include <utility>
+#include <vector>
 using namespace std;
 
 #include "relops.hpp"

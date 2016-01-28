@@ -4,6 +4,7 @@ INCLUDE_DIRECTORIES(
 
 SET(ubigint_srcs
     ubigint.cpp
+    ubigint_c.cpp
     libfns.cpp
 )
 
