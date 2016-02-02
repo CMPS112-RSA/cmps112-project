@@ -1,5 +1,4 @@
 #include "cmps112-rsa.h"
-#include "ubigint/ubigint.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -22,31 +21,24 @@ int main(int argc, char* argv[]) {
     fread(input_buffer, 1, filesize, file);
     fclose(file);
 
-    ubigint_handle_t key_d, key_e, key_n;
-    new_ubigint_from_num(&key_d, 7);
-    new_ubigint_from_num(&key_e, 103);
-    new_ubigint_from_num(&key_n, 143);
-
     printf("Input (size %d):\n%s\n", (int)filesize, input_buffer);
 
-    size_t encrypted_len = encrypt_message(
+    /*size_t encrypted_len = encrypt_message(
         key_n, key_e, input_buffer,
         &encrypted_buffer, filesize
     );
     size_t decrypted_len = decrypt_message(
         key_n, key_d, encrypted_buffer,
         &output_buffer, encrypted_len
-    );
+    );*/
 
+    int decrypted_len = 0;
     printf("Output len: %d\n", (int)decrypted_len);
     printf("%s\n", output_buffer);
 
     free(input_buffer);
     free(encrypted_buffer);
     free(output_buffer);
-    free_ubigint(&key_d);
-    free_ubigint(&key_e);
-    free_ubigint(&key_n);
 
     return 0;
 }
