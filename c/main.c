@@ -23,19 +23,26 @@ int main(int argc, char* argv[]) {
 
     printf("Input (size %d):\n%s\n", (int)filesize, input_buffer);
 
-    /*size_t encrypted_len = encrypt_message(
+    bigint_handle_t key_d, key_e, key_n;
+    new_bigint_from_short(&key_d, 7);
+    new_bigint_from_short(&key_e, 103);
+    new_bigint_from_short(&key_n, 143);
+
+    size_t encrypted_len = encrypt_message(
         key_n, key_e, input_buffer,
         &encrypted_buffer, filesize
     );
     size_t decrypted_len = decrypt_message(
         key_n, key_d, encrypted_buffer,
         &output_buffer, encrypted_len
-    );*/
+    );
 
-    int decrypted_len = 0;
     printf("Output len: %d\n", (int)decrypted_len);
     printf("%s\n", output_buffer);
 
+    free_bigint(&key_d);
+    free_bigint(&key_e);
+    free_bigint(&key_n);
     free(input_buffer);
     free(encrypted_buffer);
     free(output_buffer);
