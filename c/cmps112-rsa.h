@@ -3,11 +3,9 @@
 
 #include <stdlib.h>
 
-#include "ubigint/ubigint.h"
-
 typedef char* buffer_t;
 
-size_t encrypt_message(
+/*size_t encrypt_message(
     ubigint_handle_t key_n,
     ubigint_handle_t key_e,
     buffer_t input_buffer,
@@ -21,6 +19,6 @@ size_t decrypt_message(
     buffer_t input_buffer,
     buffer_t* output_buffer_ptr,
     size_t message_len
-);
+);*/
 
 #endif /* CMPS112_RSA_H */
