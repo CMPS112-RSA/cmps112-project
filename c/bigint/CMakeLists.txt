@@ -6,6 +6,7 @@ SET(bigint_srcs
     BigIntegerUtils.cc
     BigUnsigned.cc
     BigUnsignedInABase.cc
+    BigInteger_c.cc
 )
 
 ADD_LIBRARY(bigint STATIC ${bigint_srcs})

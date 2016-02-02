@@ -1,6 +1,8 @@
 #ifndef CMPS112_RSA_H
 #define CMPS112_RSA_H
 
+#include "bigint/BigInteger_c.h"
+
 #include <stdlib.h>
 
 typedef char* buffer_t;
