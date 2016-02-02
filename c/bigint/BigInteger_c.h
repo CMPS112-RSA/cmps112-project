@@ -13,27 +13,27 @@ typedef struct bigint_t bigint_t;
 
 typedef bigint_t* bigint_handle_t;
 
-void new_bigint_from_ulong(
+int new_bigint_from_ulong(
     bigint_handle_t* handle_ptr,
     unsigned long x
 );
 
-void new_bigint_from_string(
+int new_bigint_from_string(
     bigint_handle_t* handle_ptr,
     const char* s
 );
 
-void new_bigint_from_binary(
+int new_bigint_from_binary(
     bigint_handle_t* handle_ptr,
     const uint8_t* data,
     size_t length
 );
 
-void free_bigint(
+int free_bigint(
     bigint_handle_t* handle_ptr
 );
 
-void bigint_modexp(
+int bigint_modexp(
     bigint_handle_t base,
     bigint_handle_t exponent,
     bigint_handle_t modulus,
