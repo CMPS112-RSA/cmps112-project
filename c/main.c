@@ -21,8 +21,6 @@ int main(int argc, char* argv[]) {
     fread(input_buffer, 1, filesize, file);
     fclose(file);
 
-    printf("Input (size %d):\n%s\n", (int)filesize, input_buffer);
-
     bigint_handle_t key_d, key_e, key_n;
     new_bigint_from_short(&key_d, 103);
     new_bigint_from_short(&key_e, 7);
@@ -39,7 +37,6 @@ int main(int argc, char* argv[]) {
     );
 
     printf("Output len: %d\n", (int)decrypted_len);
-    printf("%s\n", output_buffer);
 
     free_bigint(&key_d);
     free_bigint(&key_e);

@@ -54,7 +54,7 @@ int free_bigint(
     bigint_handle_t* handle_ptr
 ) {
     CPP_TO_C(
-        free(*handle_ptr);
+        delete (*handle_ptr);
         (*handle_ptr) = NULL;
     )
 }

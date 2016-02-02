@@ -23,7 +23,7 @@ size_t encrypt_message(
         short output = 0;
         bigint_to_short(output_byte, &output);
         intermediate[i] = (char)output;
-        printf("%c -> %c\n", input_buffer[i], intermediate[i]);
+        //printf("%c -> %c\n", input_buffer[i], intermediate[i]);
         free_bigint(&input_byte);
     }
 
