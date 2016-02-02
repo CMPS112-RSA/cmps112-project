@@ -21,7 +21,9 @@ int main(int argc, char* argv[]) {
     fread(input_buffer, 1, filesize, file);
     fclose(file);
 
-    bigint_handle_t key_d, key_e, key_n;
+    bigint_handle_t key_d = NULL;
+    bigint_handle_t key_e = NULL;
+    bigint_handle_t key_n = NULL;
     new_bigint_from_short(&key_d, 103);
     new_bigint_from_short(&key_e, 7);
     new_bigint_from_short(&key_n, 143);
