@@ -32,9 +32,10 @@ int main(int argc, char* argv[]) {
         key_n, key_e, input_buffer,
         &encrypted_buffer, filesize
     );
+    (void)encrypted_len;
     size_t decrypted_len = decrypt_message(
         key_n, key_d, encrypted_buffer,
-        &output_buffer, encrypted_len
+        &output_buffer
     );
 
     printf("Output len: %d\n", (int)decrypted_len);
