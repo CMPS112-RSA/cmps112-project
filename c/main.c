@@ -37,6 +37,9 @@ int main(int argc, char* argv[]) {
     );
 
     printf("Output len: %d\n", (int)decrypted_len);
+    for(size_t i = 0; i < decrypted_len; i++) {
+        printf("%c %d\n", output_buffer[i], (int)output_buffer[i]);
+    }
 
     free_bigint(&key_d);
     free_bigint(&key_e);

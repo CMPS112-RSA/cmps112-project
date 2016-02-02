@@ -22,6 +22,11 @@ int new_bigint_from_short(
     short x
 );
 
+int new_bigint_from_ulong(
+    bigint_handle_t* handle_ptr,
+    unsigned long x
+);
+
 int new_bigint_from_string(
     bigint_handle_t* handle_ptr,
     const char* s
@@ -40,6 +45,11 @@ int free_bigint(
 int bigint_to_short(
     bigint_handle_t handle,
     short* ret
+);
+
+int bigint_to_ulong(
+    bigint_handle_t handle,
+    unsigned long* ret
 );
 
 int bigint_modexp(

@@ -56,9 +56,10 @@ BigInteger dataToBigInteger(const T* data, BigInteger::Index length, BigInteger:
 	// Convert
 	for (blockNum = 0, pieceNum = 0; blockNum < numBlocks; blockNum++) {
 		BigInteger::Blk curBlock = 0;
-		for (pieceNumHere = 0; pieceNumHere < piecesPerBlock && pieceNum < length;
-			pieceNumHere++, pieceNum++)
-			curBlock |= (BigInteger::Blk(data[pieceNum]) << (pieceSizeInBits * pieceNumHere));
+		for (pieceNumHere = 0; pieceNumHere < piecesPerBlock && pieceNum < length; pieceNumHere++, pieceNum++) {
+			curBlock |= (BigInteger::Blk(data[(length-1)-pieceNum]) << (pieceSizeInBits * pieceNumHere));
+			//curBlock |= (BigInteger::Blk(data[pieceNum]) << (pieceSizeInBits * pieceNumHere));
+        }
 		blocks[blockNum] = curBlock;
 	}
 

@@ -29,6 +29,16 @@ int new_bigint_from_short(
     )
 }
 
+int new_bigint_from_ulong(
+    bigint_handle_t* handle_ptr,
+    unsigned long x
+) {
+    CPP_TO_C(
+        (*handle_ptr) = new bigint_t;
+        (*handle_ptr)->cpp = BigUnsigned(x);
+    )
+}
+
 int new_bigint_from_string(
     bigint_handle_t* handle_ptr,
     const char* s
@@ -65,6 +75,15 @@ int bigint_to_short(
 ) {
     CPP_TO_C(
         *ret = handle->cpp.toShort();
+    )
+}
+
+int bigint_to_ulong(
+    bigint_handle_t handle,
+    unsigned long* ret
+) {
+    CPP_TO_C(
+        *ret = handle->cpp.toUnsignedLong();
     )
 }
 
