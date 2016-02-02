@@ -11,7 +11,7 @@ ADD_SUBDIRECTORY(bigint)
 
 SET(srcs
     base64.c
-    #crypt.c
+    crypt.c
     getopt.c
     main.c
 )

@@ -7,20 +7,20 @@
 
 typedef char* buffer_t;
 
-/*size_t encrypt_message(
-    ubigint_handle_t key_n,
-    ubigint_handle_t key_e,
+size_t encrypt_message(
+    bigint_handle_t key_n,
+    bigint_handle_t key_e,
     buffer_t input_buffer,
     buffer_t* output_buffer_ptr,
     size_t message_len
 );
 
 size_t decrypt_message(
-    ubigint_handle_t key_n,
-    ubigint_handle_t key_d,
+    bigint_handle_t key_n,
+    bigint_handle_t key_d,
     buffer_t input_buffer,
     buffer_t* output_buffer_ptr,
     size_t message_len
-);*/
+);
 
 #endif /* CMPS112_RSA_H */

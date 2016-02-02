@@ -13,9 +13,13 @@ typedef struct bigint_t bigint_t;
 
 typedef bigint_t* bigint_handle_t;
 
-int new_bigint_from_ulong(
+int new_bigint(
+    bigint_handle_t* handle_ptr
+);
+
+int new_bigint_from_short(
     bigint_handle_t* handle_ptr,
-    unsigned long x
+    short x
 );
 
 int new_bigint_from_string(
@@ -31,6 +35,11 @@ int new_bigint_from_binary(
 
 int free_bigint(
     bigint_handle_t* handle_ptr
+);
+
+int bigint_to_short(
+    bigint_handle_t handle,
+    short* ret
 );
 
 int bigint_modexp(

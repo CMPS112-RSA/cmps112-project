@@ -11,9 +11,17 @@ typedef struct {
     catch(...) { return 1; } \
     return 0;
 
-int new_bigint_from_ulong(
+int new_bigint(
+    bigint_handle_t* handle_ptr
+) {
+    CPP_TO_C(
+        (*handle_ptr) = new bigint_t;
+    )
+}
+
+int new_bigint_from_short(
     bigint_handle_t* handle_ptr,
-    unsigned long x
+    short x
 ) {
     CPP_TO_C(
         (*handle_ptr) = new bigint_t;
@@ -48,6 +56,15 @@ int free_bigint(
     CPP_TO_C(
         free(*handle_ptr);
         (*handle_ptr) = NULL;
+    )
+}
+
+int bigint_to_short(
+    bigint_handle_t handle,
+    short* ret
+) {
+    CPP_TO_C(
+        *ret = handle->cpp.toShort();
     )
 }
 
