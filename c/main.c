@@ -24,8 +24,8 @@ int main(int argc, char* argv[]) {
     printf("Input (size %d):\n%s\n", (int)filesize, input_buffer);
 
     bigint_handle_t key_d, key_e, key_n;
-    new_bigint_from_short(&key_d, 7);
-    new_bigint_from_short(&key_e, 103);
+    new_bigint_from_short(&key_d, 103);
+    new_bigint_from_short(&key_e, 7);
     new_bigint_from_short(&key_n, 143);
 
     size_t encrypted_len = encrypt_message(
