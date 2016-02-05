@@ -12,11 +12,11 @@ import Data.ByteString.Char8
 encryptCharacter :: Integer -> Integer -> Integer -> Integer
 encryptCharacter char keyN keyE = mod powop keyN where powop = char ^ keyE
 
-convertStrToInteger :: [B.Word8] -> [Integer]
-convertStrToInteger str = Prelude.map (\x -> (read (show x) :: Integer)) str
+convertWord8ToInteger :: [B.Word8] -> [Integer]
+convertWord8ToInteger str = Prelude.map (\x -> (read (show x) :: Integer)) str
 
 encryptMsg :: [B.Word8] -> Integer -> Integer -> [Integer]
-encryptMsg msg keyN keyE = Prelude.map (\x -> encryptCharacter x keyN keyE) (convertStrToInteger msg)
+encryptMsg msg keyN keyE = Prelude.map (\x -> encryptCharacter x keyN keyE) (convertWord8ToInteger msg)
 
 
 --to get file contents BL.readFile (args!!0)
