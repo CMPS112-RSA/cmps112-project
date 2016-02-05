@@ -12,12 +12,26 @@ import Data.ByteString.Char8
 encryptCharacter :: Integer -> Integer -> Integer -> Integer
 encryptCharacter char keyN keyE = mod powop keyN where powop = char ^ keyE
 
+decryptCharacter :: Integer -> Integer -> Integer -> Integer
+decryptCharacter char keyD keyN = mod powop keyN where powop = char ^ keyD
+
 convertWord8ToInteger :: [B.Word8] -> [Integer]
-convertWord8ToInteger str = Prelude.map (\x -> (read (show x) :: Integer)) str
+convertWord8ToInteger char = Prelude.map (\x -> (read (show x) :: Integer)) char
+
+convertIntegerToWord8 :: [Integer] -> [B.Word8]
+convertIntegerToWord8 int = Prelude.map (\x -> (read (show x) :: B.Word8)) int
 
 encryptMsg :: [B.Word8] -> Integer -> Integer -> [Integer]
 encryptMsg msg keyN keyE = Prelude.map (\x -> encryptCharacter x keyN keyE) (convertWord8ToInteger msg)
 
+decryptMsg :: [Integer] -> Integer -> Integer -> [B.Word8]
+decryptMsg msg keyD keyN = convertIntegerToWord8 (Prelude.map (\x -> decryptCharacter x keyD keyN) msg)
+
+correctDecrypt :: [B.Word8] -> [B.Word8] -> Bool
+correctDecrypt [] [] = True
+correctDecrypt _ [] = False
+correctDecrypt [] _ = False
+correctDecrypt (x:xs) (y:ys) = if x /= y then False else correctDecrypt xs ys
 
 --to get file contents BL.readFile (args!!0)
 
@@ -25,7 +39,10 @@ main = do
           args <- getArgs
           mapM SIO.putStrLn args
           contents <- BL.readFile (args!!0)
-          BL.putStr contents
-          print "------------------------------------------"
-          print (encryptMsg (BL.unpack contents) 6261533 65537)
-          print (mod (2876799 ^ 6261533) 62534171)
+          SIO.putStr "Encrypted\n"
+          print (encryptMsg (BL.unpack contents) 143 7)
+          SIO.putStr "\n\n\nDecrypted\n"
+          print (decryptMsg (encryptMsg (BL.unpack contents) 143 7) 103 143)
+          SIO.putStr "\n\n\nOriginal\n"
+          print (BL.unpack contents)
+          if (correctDecrypt (BL.unpack contents) (decryptMsg (encryptMsg (BL.unpack contents) 143 7) 103 143)) then SIO.putStrLn "True" else SIO.putStrLn "False"
