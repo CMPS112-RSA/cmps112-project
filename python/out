@@ -1,0 +1,132 @@
+__author__ = 'ajanakos'
+
+# Alex Janakos
+# cmps112
+# 01/24/16
+# HW #2, Q #11
+
+# Built in python 2.7
+#
+# Usage: python sayNum.py number
+#
+# doThree() function takes in a string of length three
+# and converts it to a string representing the numbers
+#
+# sayNum() simply pads number string with "0"s so len(numStr % 3 == 0)
+# then feeds each length 3 string into doThree()
+# Each output from doThree() is concatenated to a larger array
+# of strings with appropriate bigs array value
+
+ones = [
+    "zero",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen"
+]
+
+tens = [
+    "zero",
+    "ten",
+    "twenty",
+    "thirty",
+    "forty",
+    "fifty",
+    "sixty",
+    "seventy",
+    "eighty",
+    "ninety",
+]
+
+bigs = [
+    "",
+    "thousand",
+    "million",
+    "billion",
+    "trillion",
+    "quadrillion",
+    "quintillion",
+    "sextillion",
+    "septillion",
+    "octillion",
+    "nonillion",
+    "decillion",
+    "undecillion",
+    "duodecillion",
+    "tredecillion",
+    "quattuordecillion",
+    "sexdecillion",
+    "septendecillion",
+    "octodecillion",
+    "novemdecillion",
+    "vigintillion"
+]
+
+def doThree(string):
+
+    small = []
+    num = int(string)
+
+    # Check for 100 10 and 1 places and append right word number
+    if num / 100 >= 1:
+        small.append(ones[num/100]+" hundred")
+        num = num % 100
+    if num / 10 >= 1 and num / 1 >= 1 and num < 20:
+        small.append(ones[num])
+        num = 0
+    if num / 10 >= 1 and num / 1 >= 1:
+        small.append(tens[num/10])
+        num = num % 10
+    if num / 1 >= 1:
+        small.append(ones[num])
+
+    return small
+
+def sayNum(num):
+
+    numArray = []
+    pad = len(str(num))
+
+    # Makes sure the legnth of the numStr is a factor of 3
+    if pad % 3 == 0:
+        numStr = str(num)
+    if pad % 3 == 1:
+        numStr = "00"+str(num)
+    if pad % 3 == 2:
+        numStr = "0"+str(num)
+
+    # Calls doThree() which gets the words describing a set of three number
+    # Build numArray with each set of three translated
+    for i in range((len(numStr) / 3), 0, -1):
+        numArray = numArray + doThree(numStr[:3]) + [bigs[i-1]]
+        numStr = numStr[3:]
+
+    return " ".join(numArray)
+
+if __name__=='__main__':
+
+    import sys
+
+    if len(sys.argv)!=2:
+        print "Usage: sayNum.py number"
+        exit()
+    if len(sys.argv[1]) > 63 or int(sys.argv[1]) < 1:
+        print "Out of Range :("
+        exit()
+
+    print sayNum(sys.argv[1])
