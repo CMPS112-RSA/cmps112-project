@@ -21,12 +21,15 @@ int main(int argc, char* argv[]) {
     fread(input_buffer, 1, filesize, file);
     fclose(file);
 
-    bigint_handle_t key_d = NULL;
-    bigint_handle_t key_e = NULL;
-    bigint_handle_t key_n = NULL;
-    new_bigint_from_short(&key_d, 103);
-    new_bigint_from_short(&key_e, 7);
-    new_bigint_from_short(&key_n, 143);
+    // Initialize key variables
+    mpz_t key_d, key_e, key_n;
+    mpz_init(key_d);
+    mpz_init(key_e);
+    mpz_init(key_n);
+
+    mpz_set_str(key_d, "7422006203", 10);
+    mpz_set_str(key_e, "5905153727", 10);
+    mpz_set_str(key_n, "9192668113", 10);
 
     size_t encrypted_len = encrypt_message(
         key_n, key_e, input_buffer,
@@ -43,9 +46,9 @@ int main(int argc, char* argv[]) {
         printf("%c %d\n", output_buffer[i], (int)output_buffer[i]);
     }
 
-    free_bigint(&key_d);
-    free_bigint(&key_e);
-    free_bigint(&key_n);
+    mpz_clear(key_n);
+    mpz_clear(key_e);
+    mpz_clear(key_d);
     free(input_buffer);
     free(encrypted_buffer);
     free(output_buffer);

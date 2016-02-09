@@ -5,26 +5,20 @@
 #include <string.h>
 
 size_t encrypt_message(
-    bigint_handle_t key_n,
-    bigint_handle_t key_e,
+    mpz_t key_n,
+    mpz_t key_e,
     buffer_t input_buffer,
     buffer_t* output_buffer_ptr,
     size_t message_len
 ) {
     buffer_t intermediate = calloc(message_len, 1);
 
-    bigint_handle_t input_byte, output_byte;
-    new_bigint(&output_byte);
+    mpz_t input_byte, output_byte;
 
     for(size_t i = 0; i < message_len; i++) {
-        new_bigint_from_short(&input_byte, input_buffer[i]);
-        bigint_modexp(input_byte, key_e, key_n, output_byte);
-
-        short output = 0;
-        bigint_to_short(output_byte, &output);
-        intermediate[i] = (char)output;
-        //printf("%c -> %c\n", input_buffer[i], intermediate[i]);
-        free_bigint(&input_byte);
+        mpz_init_set_si(input_byte, input_buffer[i]);
+        mpz_powm(output_byte, input_byte, key_e, key_n);
+        intermediate[i] = (char)mpz_get_si(output_byte);
     }
 
     size_t output_len = Base64encode_len((int)message_len);
@@ -32,14 +26,15 @@ size_t encrypt_message(
     Base64encode((*output_buffer_ptr), intermediate, message_len);
 
     free(intermediate);
-    free_bigint(&output_byte);
+    mpz_clear(input_byte);
+    mpz_clear(output_byte);
 
     return output_len;
 }
 
 size_t decrypt_message(
-    bigint_handle_t key_n,
-    bigint_handle_t key_d,
+    mpz_t key_n,
+    mpz_t key_d,
     buffer_t input_buffer,
     buffer_t* output_buffer_ptr
 ) {
@@ -49,21 +44,18 @@ size_t decrypt_message(
     Base64decode(intermediate, input_buffer);
 
     (*output_buffer_ptr) = calloc(decode_len, 1);
-    bigint_handle_t input_byte, output_byte;
-    new_bigint(&output_byte);
+
+    mpz_t input_byte, output_byte;
 
     for(size_t i = 0; i < decode_len; i++) {
-        new_bigint_from_short(&input_byte, intermediate[i]);
-        bigint_modexp(input_byte, key_d, key_n, output_byte);
-
-        short output = 0;
-        bigint_to_short(output_byte, &output);
-        (*output_buffer_ptr)[i] = (char)output;
-        free_bigint(&input_byte);
+        mpz_init_set_si(input_byte, intermediate[i]);
+        mpz_powm(output_byte, input_byte, key_d, key_n);
+        (*output_buffer_ptr)[i] = (char)mpz_get_si(output_byte);
     }
 
     free(intermediate);
-    free_bigint(&output_byte);
+    mpz_clear(output_byte);
+    mpz_clear(input_byte);
 
     return decode_len;
 }
