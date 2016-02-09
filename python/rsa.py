@@ -80,10 +80,12 @@ def main():
             encrypted = bytearray(encrypt(read_into_buffer(in_file)))
             fw = open(os.getcwd()+"/"+out_file, 'w')
             fw.write(encrypted)
+            fw.close()
         if decrypt_opt:
             decrypted  = bytearray(decrypt(read_into_buffer(in_file)))
             fw = open(os.getcwd()+"/"+out_file, 'w')
             fw.write(decrypted)
+            fw.close()
 main()
 
 
