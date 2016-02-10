@@ -1,0 +1,10 @@
+INCLUDE_DIRECTORIES(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${GMP_INCLUDE_DIRS}
+)
+
+SET(lib_srcs
+    rsa.c
+)
+ADD_LIBRARY(cmps112-rsa STATIC ${lib_srcs})
+TARGET_LINK_LIBRARIES(cmps112-rsa ${GMP_LIBRARIES})
