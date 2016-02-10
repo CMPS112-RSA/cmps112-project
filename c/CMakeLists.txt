@@ -15,7 +15,6 @@ ADD_SUBDIRECTORY(rsa-lib)
 INCLUDE_DIRECTORIES(${GMP_INCLUDE_DIR})
 
 SET(srcs
-    base64.c
     crypt.c
     main.c
 )
