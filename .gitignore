@@ -1,6 +1,7 @@
 # Haskell
 dist
 cabal-dev
+*.txt
 *.o
 *.hi
 *.chi

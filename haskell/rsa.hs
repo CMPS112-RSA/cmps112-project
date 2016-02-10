@@ -7,6 +7,7 @@ import qualified Data.Binary as B
 import Data.Char
 import System.Environment
 import Data.ByteString.Char8
+import qualified Data.List.Split as DLS
 --import Data.ByteString.Base64.Lazy (encode, decode)
 
 encryptCharacter :: Integer -> Integer -> Integer -> Integer
@@ -27,6 +28,13 @@ encryptMsg msg keyN keyE = Prelude.map (\x -> encryptCharacter x keyN keyE) (con
 decryptMsg :: [Integer] -> Integer -> Integer -> [B.Word8]
 decryptMsg msg keyD keyN = convertIntegerToWord8 (Prelude.map (\x -> decryptCharacter x keyD keyN) msg)
 
+integerToString :: [Integer] -> [String]
+integerToString x = Prelude.map (\y -> show y) x
+
+stringToInteger :: [String] -> [Integer]
+stringToInteger x = Prelude.map (\y -> read y :: Integer) x
+
+
 correctDecrypt :: [B.Word8] -> [B.Word8] -> Bool
 correctDecrypt [] [] = True
 correctDecrypt _ [] = False
@@ -46,4 +54,7 @@ main = do
           --SIO.putStr "\n\n\nOriginal\n"
           --print (BL.unpack contents)
           --if (correctDecrypt (BL.unpack contents) (decryptMsg (encryptMsg (BL.unpack contents) 143 7) 103 143)) then SIO.putStrLn "True" else SIO.putStrLn "False"
-          print ((decryptMsg (encryptMsg (BL.unpack contents) 5917 5027) 1163 5917)!!0)
+          --print ((decryptMsg (encryptMsg (BL.unpack contents) 5917 5027) 1163 5917)!!0)
+          Prelude.mapM (\x -> Prelude.appendFile "print3DArray.txt" (x ++ "\n")) (integerToString (encryptMsg (BL.unpack contents) 5917 5027))
+          encryptedFileResults <- Prelude.readFile "print3DArray.txt"
+          let splitted = (Prelude.init (DLS.splitOn "\n" encryptedFileResults)) in BL.writeFile "print3DArray_result.class" (BL.pack (decryptMsg (stringToInteger splitted) 1163 5917))
