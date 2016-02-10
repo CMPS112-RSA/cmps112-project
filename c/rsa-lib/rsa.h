@@ -12,12 +12,12 @@ typedef struct {
     mpz_t d;
 } rsa_public_key_t;
 
-void rsa_init_private_key(
+int rsa_init_private_key(
     const char* filename,
     rsa_private_key_t* key
 );
 
-void rsa_init_public_key(
+int rsa_init_public_key(
     const char* filename,
     rsa_public_key_t* key
 );
@@ -27,6 +27,16 @@ void rsa_free_private_key(
 );
 
 void rsa_free_public_key(
+    rsa_public_key_t* key
+);
+
+int rsa_write_private_key(
+    const char* filename,
+    rsa_private_key_t* key
+);
+
+int rsa_write_public_key(
+    const char* filename,
     rsa_public_key_t* key
 );
 
