@@ -4,6 +4,7 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(lib_srcs
+    getopt.c
     rsa.c
 )
 ADD_LIBRARY(cmps112-rsa STATIC ${lib_srcs})

@@ -17,7 +17,6 @@ INCLUDE_DIRECTORIES(${GMP_INCLUDE_DIR})
 SET(srcs
     base64.c
     crypt.c
-    getopt.c
     main.c
 )
 ADD_EXECUTABLE(cmps112-rsa-c ${srcs})
