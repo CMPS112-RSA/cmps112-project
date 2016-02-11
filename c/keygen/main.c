@@ -1,5 +1,7 @@
 #include <rsa-lib/rsa.h>
 
+#include <gmp.h>
+
 #include <fcntl.h>
 #include <inttypes.h>
 #include <math.h>
@@ -32,6 +34,7 @@ static bool is_prime(const uint32_t num) {
         }
     }
 
+    // Only check odd numbers for primality
     uint32_t start_num = num / 2;
     if(start_num % 2 == 0) {
         start_num--;
@@ -45,13 +48,18 @@ static bool is_prime(const uint32_t num) {
     return true;
 }
 
-// http://stackoverflow.com/a/7921017
+/*
+ * Based on: http://stackoverflow.com/a/7921017
+ *
+ * /dev/urandom isn't as secure as /dev/random, but it's faster and
+ * works for our purposes.
+ */
 static uint32_t get_random_number() {
     int fd;
     uint32_t ret = 0;
 
     if((fd = open("/dev/urandom", O_RDONLY)) == -1) {
-        fprintf(stderr, "Failed to open /dev/urandom. Using rand() instead.\n");
+        fprintf(stderr, "failed to open /dev/urandom. Using rand() instead...");
         srand(time(NULL));
         return rand();
     }
@@ -72,14 +80,98 @@ static inline uint32_t get_random_prime_number() {
     return ret;
 }
 
+// 1 < e < totient
+// gcd(e, totient) = 1
+void calculate_e(mpz_t e, mpz_t totient) {
+    mpz_t gcd;
+    mpz_init(gcd);
+
+    mpz_set_ui(e, 0);
+    while(true) {
+        mpz_set_ui(e, get_random_number());
+        if(mpz_cmp(e, totient) >= 0) {
+            continue;
+        }
+
+        mpz_gcd(gcd, e, totient);
+        if(mpz_cmp_ui(gcd, 1) == 0) {
+            break;
+        }
+    }
+
+    // Cleanup
+    mpz_clear(gcd);
+}
+
+// (d)(e) % totient = 1
+void calculate_d(mpz_t d, mpz_t e, mpz_t totient) {
+    mpz_t i1, i2; // Intermediates
+    mpz_init(i1);
+    mpz_init(i2);
+
+    while(true) {
+        mpz_set_ui(d, get_random_number());
+        mpz_mul(i1, d, e); // i1 = d * e
+        mpz_mod(i2, i1, totient); // i2 = i1 % totient
+        if(mpz_cmp_ui(d, 1) == 0) {
+            break;
+        }
+    }
+
+    // Cleanup
+    mpz_clear(i2);
+    mpz_clear(i1);
+}
+
 int main(int argc, char** argv) {
     (void)argc;
     (void)argv;
 
-    uint32_t p = get_random_prime_number();
-    printf("p = %" PRIu32 "\n", p);
-    uint32_t q = get_random_prime_number();
-    printf("q = %" PRIu32 "\n", q);
+    // So we can output without a newline
+    setbuf(stdout, NULL);
+
+    mpz_t p, q, n, totient, e, d;
+
+    // p is a large prime
+    printf("Generating 32-bit p...");
+    mpz_init_set_ui(p, get_random_prime_number());
+    printf("done.\n");
+
+    // q is a large prime
+    printf("Generating 32-bit q...");
+    mpz_init_set_ui(q, get_random_prime_number());
+    printf("done.\n");
+
+    // n = p * q
+    printf("Generating n...");
+    mpz_init(n);
+    mpz_mul(n, p, q); // n = p * q
+    printf("done.\n");
+
+    // totient = (p - 1) * (q - 1)
+    printf("Calculating totient...");
+    mpz_init(totient);
+    mpz_sub_ui(p, p, 1);    // p = p - 1
+    mpz_sub_ui(q, q, 1);    // q = q - 1
+    mpz_mul(totient, p, q); // totient = p * q
+    printf("done.\n");
+
+    printf("Calculating e...");
+    mpz_init(e);
+    calculate_e(e, totient);
+    printf("done.\n");
+
+    printf("Calculating d...");
+    mpz_init(d);
+    calculate_d(d, e, totient);
+    printf("done.\n");
+
+    mpz_clear(d);
+    mpz_clear(e);
+    mpz_clear(totient);
+    mpz_clear(n);
+    mpz_clear(q);
+    mpz_clear(p);
 
     return 0;
 }
