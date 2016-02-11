@@ -10,6 +10,7 @@
 #include <time.h>
 #include <unistd.h>
 
+// https://primes.utm.edu/lists/small/1000.txt
 static const uint32_t smallest_primes[] = {
     2,3,5,7,11,13,17,19,23,29,
     31,37,41,43,47,53,59,61,67,71,
@@ -23,13 +24,10 @@ static const uint32_t smallest_primes[] = {
     467,479,487,491,499,503,509,521,523,541
 };
 
-// There has to be a way to make this faster
 static bool is_prime(const uint32_t num) {
     // See if this is factorable by the smallest 100 primes
-    printf("is_prime: testing %" PRIu32 "\n", num);
     for(size_t i = 0; i < 100; i++) {
         if(num % smallest_primes[i] == 0) {
-            printf("Factorable by %" PRIu32 "\n", smallest_primes[i]);
             return false;
         }
     }
@@ -40,12 +38,10 @@ static bool is_prime(const uint32_t num) {
     }
     for(uint32_t i = start_num; i > 1; i -= 2) {
         if(num % i == 0) {
-            printf("Factorable by %" PRIu32 "\n", i);
             return false;
         }
     }
 
-    printf("Success!\n");
     return true;
 }
 
@@ -59,7 +55,7 @@ static uint32_t get_random_number() {
         srand(time(NULL));
         return rand();
     }
-    while(ret < 10001) {
+    while(ret < 10000000) {
         read(fd, &ret, 4);
     }
     close(fd);
