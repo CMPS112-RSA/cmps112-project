@@ -7,10 +7,10 @@
 #define BUFFER_LEN 1024
 static char num_buffer[BUFFER_LEN];
 
-static int write_num(FILE* output, mpz_t* num) {
+static int write_num(FILE* output, mpz_t num) {
     memset(num_buffer, '\0', BUFFER_LEN);
-    mpz_get_str(num_buffer, 10, *num);
-    size_t ascii_size = mpz_sizeinbase(*num, 10);
+    mpz_get_str(num_buffer, 10, num);
+    size_t ascii_size = mpz_sizeinbase(num, 10);
     size_t written = fwrite(num_buffer, 1, ascii_size, output);
     if(written != ascii_size) {
         return 1;
@@ -42,7 +42,7 @@ int encrypt_message(
         status_code = 1;
         goto cleanup_input_file;
     }
-    if(write_num(output_file, &(key->n))) {
+    if(write_num(output_file, key->n)) {
         fprintf(stderr, "Failed to write modulo number to encrypted file.\n");
         status_code = 1;
         goto cleanup_output_file;
@@ -66,7 +66,7 @@ int encrypt_message(
         mpz_powm(output_num, input_byte, key->e, key->n);
 
         // Write to output file
-        if(write_num(output_file, &output_num)) {
+        if(write_num(output_file, output_num)) {
             fprintf(stderr, "Failed to write encrypted number to encrypted file.\n");
             status_code = 1;
             goto cleanup_gmp_nums;
