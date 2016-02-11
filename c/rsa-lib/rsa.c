@@ -4,7 +4,6 @@
 #include <string.h>
 
 #define BUFFER_LEN 1024
-
 static char key_buffer[BUFFER_LEN];
 
 int rsa_init_private_key(
