@@ -10,7 +10,7 @@ static char num_buffer[BUFFER_LEN];
 static int write_num(FILE* output, mpz_t* num) {
     memset(num_buffer, '\0', BUFFER_LEN);
     mpz_get_str(num_buffer, 10, *num);
-    size_t ascii_size = mpz_sizeinbase(*num, 10) + 2;
+    size_t ascii_size = mpz_sizeinbase(*num, 10);
     size_t written = fwrite(num_buffer, 1, ascii_size, output);
     if(written != ascii_size) {
         return 1;
@@ -36,7 +36,7 @@ int encrypt_message(
     }
 
     // Open file for encrypted output, write modulo value to it
-    FILE* output_file = fopen(output_filename, "r");
+    FILE* output_file = fopen(output_filename, "w");
     if(!output_file) {
         fprintf(stderr, "Failed to open output file.\n");
         status_code = 1;
@@ -112,7 +112,7 @@ int decrypt_message(
     mpz_set_str(key_n, num_buffer, 10);
 
     // Open output file
-    FILE* output_file = fopen(output_filename, "r");
+    FILE* output_file = fopen(output_filename, "w");
     if(!output_file) {
         fprintf(stderr, "Failed to open output file.\n");
         status_code = 1;
