@@ -12,6 +12,16 @@ int main(int argc, char** argv) {
     (void)argc;
     (void)argv;
 
+    int status_code = 0;
+
+    if(argc != 3) {
+        fprintf(stderr, "Usage: exec [privkey filename] [pubkey filename]\n");
+        return 1;
+    }
+
+    const char* privkey_filename = argv[1];
+    const char* pubkey_filename = argv[2];;
+
     // So we can output without a newline
     setbuf(stdout, NULL);
 
@@ -51,13 +61,23 @@ int main(int argc, char** argv) {
     get_d(pubkey.d, privkey.e, totient);
     gmp_printf("%Zd.\n", pubkey.d);
 
-    mpz_clear(totient);
-    mpz_clear(q);
-    mpz_clear(p);
+    if(rsa_write_private_key(privkey_filename, &privkey)) {
+        fprintf(stderr, "Failed to write private key file.\n");
+        status_code = 1;
+        goto gmp_num_cleanup;
+    }
+    if(rsa_write_public_key(pubkey_filename, &pubkey)) {
+        fprintf(stderr, "Failed to write public key file.\n");
+        status_code = 1;
+    }
 
-    mpz_clear(pubkey.d);
-    mpz_clear(privkey.n);
-    mpz_clear(privkey.e);
+    gmp_num_cleanup:
+        mpz_clear(totient);
+        mpz_clear(q);
+        mpz_clear(p);
+        mpz_clear(pubkey.d);
+        mpz_clear(privkey.n);
+        mpz_clear(privkey.e);
 
     return 0;
 }
