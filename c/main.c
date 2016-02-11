@@ -32,14 +32,14 @@ int main(int argc, char* argv[]) {
     }
 
     // Encrypt and decrypt
-    if(encrypt_message(input_file, encrypted_file, &privkey)) {
+    /*if(encrypt_message(input_file, encrypted_file, &privkey)) {
         fprintf(stderr, "Failed to encrypt message.\n");
         return 1;
     }
     if(decrypt_message(encrypted_file, output_file, &pubkey)) {
         fprintf(stderr, "Failed to decrypt message.\n");
         return 1;
-    }
+    }*/
 
     return 0;
 }
