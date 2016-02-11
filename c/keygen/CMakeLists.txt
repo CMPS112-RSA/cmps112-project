@@ -5,6 +5,7 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(srcs
+    calc.c
     main.c
 )
 ADD_EXECUTABLE(rsa-keygen ${srcs})
