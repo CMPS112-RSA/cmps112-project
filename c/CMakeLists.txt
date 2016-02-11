@@ -11,12 +11,5 @@ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Wall -Wextra")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall -Wextra")
 
 ADD_SUBDIRECTORY(rsa-lib)
-
-INCLUDE_DIRECTORIES(${GMP_INCLUDE_DIR})
-
-SET(srcs
-    crypt.c
-    main.c
-)
-ADD_EXECUTABLE(cmps112-rsa-c ${srcs})
-TARGET_LINK_LIBRARIES(cmps112-rsa-c cmps112-rsa ${GMP_LIBRARIES})
+ADD_SUBDIRECTORY(keygen)
+ADD_SUBDIRECTORY(msg-crypt)

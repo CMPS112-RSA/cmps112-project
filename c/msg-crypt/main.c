@@ -1,5 +1,5 @@
 #include "crypt.h"
-#include "rsa-lib/rsa.h"
+#include <rsa-lib/rsa.h>
 
 #include <stdio.h>
 

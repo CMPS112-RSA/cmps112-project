@@ -1,0 +1,11 @@
+INCLUDE_DIRECTORIES(
+    ${CMAKE_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${GMP_INCLUDE_DIRS}
+)
+
+SET(srcs
+    main.c
+)
+ADD_EXECUTABLE(rsa-keygen ${srcs})
+TARGET_LINK_LIBRARIES(rsa-keygen cmps112-rsa ${GMP_LIBRARIES})
