@@ -38,8 +38,7 @@ static bool is_prime(const uint32_t num) {
     if(start_num % 2 == 0) {
         start_num--;
     }
-    // This check gets around the issue of underflow always being > 0
-    for(uint32_t i = start_num; i < num; i -= 2) {
+    for(uint32_t i = start_num; i > 1; i -= 2) {
         if(num % i == 0) {
             printf("Factorable by %" PRIu32 "\n", i);
             return false;
