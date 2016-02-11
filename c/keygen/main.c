@@ -113,7 +113,7 @@ void calculate_d(mpz_t d, mpz_t e, mpz_t totient) {
         mpz_set_ui(d, get_random_number());
         mpz_mul(i1, d, e); // i1 = d * e
         mpz_mod(i2, i1, totient); // i2 = i1 % totient
-        if(mpz_cmp_ui(d, 1) == 0) {
+        if(mpz_cmp_ui(i2, 1) == 0) {
             break;
         }
     }
