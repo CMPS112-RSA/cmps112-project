@@ -104,7 +104,7 @@ void calculate_e(mpz_t e, mpz_t totient) {
 }
 
 // (d)(e) % totient = 1
-void calculate_d(mpz_t d, mpz_t e, mpz_t totient) {
+static void calculate_d(mpz_t d, mpz_t e, mpz_t totient) {
     mpz_t i1, i2; // Intermediates
     mpz_init(i1);
     mpz_init(i2);
