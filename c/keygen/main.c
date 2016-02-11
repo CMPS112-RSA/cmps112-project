@@ -80,9 +80,28 @@ static inline uint32_t get_random_prime_number() {
     return ret;
 }
 
+static inline void calculate_n(mpz_t n, mpz_t p, mpz_t q) {
+    mpz_mul(n, p, q); // n = p * q
+}
+
+// totient = (p - 1) * (q - 1)
+static void calculate_totient(mpz_t totient, mpz_t p, mpz_t q) {
+    mpz_t p2, q2;
+    mpz_init(p2);
+    mpz_init(q2);
+
+    mpz_sub_ui(p2, p, 1);    // p = p - 1
+    mpz_sub_ui(q2, q, 1);    // q = q - 1
+    mpz_mul(totient, p2, q2); // totient = p * q
+
+    // Cleanup
+    mpz_clear(q2);
+    mpz_clear(p2);
+}
+
 // 1 < e < totient
 // gcd(e, totient) = 1
-void calculate_e(mpz_t e, mpz_t totient) {
+static void calculate_e(mpz_t e, mpz_t totient) {
     mpz_t gcd;
     mpz_init(gcd);
 
@@ -142,18 +161,14 @@ int main(int argc, char** argv) {
     mpz_init_set_ui(q, get_random_prime_number());
     gmp_printf("%Zd.\n", q);
 
-    // n = p * q
     printf("Generating n...");
     mpz_init(n);
-    mpz_mul(n, p, q); // n = p * q
+    calculate_n(n, p, q);
     gmp_printf("%Zd.\n", n);
 
-    // totient = (p - 1) * (q - 1)
     printf("Calculating totient...");
     mpz_init(totient);
-    mpz_sub_ui(p, p, 1);    // p = p - 1
-    mpz_sub_ui(q, q, 1);    // q = q - 1
-    mpz_mul(totient, p, q); // totient = p * q
+    calculate_totient(totient, p, q);
     gmp_printf("%Zd.\n", totient);
 
     printf("Calculating e...");
@@ -161,10 +176,10 @@ int main(int argc, char** argv) {
     calculate_e(e, totient);
     gmp_printf("%Zd.\n", e);
 
-    printf("Calculating d...");
+    /*printf("Calculating d...");
     mpz_init(d);
     calculate_d(d, e, totient);
-    gmp_printf("%Zd.\n", d);
+    gmp_printf("%Zd.\n", d);*/
 
     mpz_clear(d);
     mpz_clear(e);
