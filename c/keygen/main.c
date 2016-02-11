@@ -133,20 +133,20 @@ int main(int argc, char** argv) {
     mpz_t p, q, n, totient, e, d;
 
     // p is a large prime
-    printf("Generating 32-bit p...");
+    printf("Generating p...");
     mpz_init_set_ui(p, get_random_prime_number());
-    printf("done.\n");
+    gmp_printf("%Zd.\n", p);
 
     // q is a large prime
-    printf("Generating 32-bit q...");
+    printf("Generating q...");
     mpz_init_set_ui(q, get_random_prime_number());
-    printf("done.\n");
+    gmp_printf("%Zd.\n", q);
 
     // n = p * q
     printf("Generating n...");
     mpz_init(n);
     mpz_mul(n, p, q); // n = p * q
-    printf("done.\n");
+    gmp_printf("%Zd.\n", n);
 
     // totient = (p - 1) * (q - 1)
     printf("Calculating totient...");
@@ -154,17 +154,17 @@ int main(int argc, char** argv) {
     mpz_sub_ui(p, p, 1);    // p = p - 1
     mpz_sub_ui(q, q, 1);    // q = q - 1
     mpz_mul(totient, p, q); // totient = p * q
-    printf("done.\n");
+    gmp_printf("%Zd.\n", totient);
 
     printf("Calculating e...");
     mpz_init(e);
     calculate_e(e, totient);
-    printf("done.\n");
+    gmp_printf("%Zd.\n", e);
 
     printf("Calculating d...");
     mpz_init(d);
     calculate_d(d, e, totient);
-    printf("done.\n");
+    gmp_printf("%Zd.\n", d);
 
     mpz_clear(d);
     mpz_clear(e);
