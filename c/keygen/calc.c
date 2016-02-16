@@ -37,7 +37,7 @@ static bool is_prime(const uint32_t num) {
     if(start_num % 2 == 0) {
         start_num--;
     }
-    for(uint32_t i = start_num; i > 1; i -= 2) {
+    for(uint32_t i = start_num; (i > 1 && i <= start_num); i -= 2) {
         if(num % i == 0) {
             return false;
         }
@@ -78,13 +78,14 @@ void get_prime(mpz_t out) {
     mpz_set_ui(out, num);
 }
 
+// totient = (p-1)(q-1)
 void get_totient(mpz_t out, mpz_t p, mpz_t q) {
     mpz_t p2, q2;
     mpz_init(p2);
     mpz_init(q2);
 
-    mpz_sub_ui(p2, p, 1);    // p = p - 1
-    mpz_sub_ui(q2, q, 1);    // q = q - 1
+    mpz_sub_ui(p2, p, 1); // p2 = p - 1
+    mpz_sub_ui(q2, q, 1); // q2 = q - 1
     mpz_mul(out, p2, q2); // totient = p * q
 
     // Cleanup
@@ -92,6 +93,8 @@ void get_totient(mpz_t out, mpz_t p, mpz_t q) {
     mpz_clear(p2);
 }
 
+// 1 < e < totient
+// gcd(e,totient) = 1
 void get_e(mpz_t out, mpz_t totient) {
     mpz_t gcd;
     mpz_init(gcd);
@@ -112,19 +115,22 @@ void get_e(mpz_t out, mpz_t totient) {
     mpz_clear(gcd);
 }
 
+// (d)(e) % totient = 1
 void get_d(mpz_t out, mpz_t e, mpz_t totient) {
     mpz_t i1, i2; // Intermediates
     mpz_init(i1);
     mpz_init(i2);
 
-    while(true) {
-        mpz_set_ui(out, get_random_number());
-        mpz_mul(i1, out, e); // i1 = d * e
+    mpz_set(out, totient);
+    do {
+        mpz_add_ui(out, out, 1);
+        mpz_mul(i1, out, e);      // i1 = d * e
         mpz_mod(i2, i1, totient); // i2 = i1 % totient
+        gmp_printf("(%Zd * %Zd) = %Zd %% %Zd = %Zd\n", out, e, i1, totient, i2);
         if(mpz_cmp_ui(i2, 1) == 0) {
             break;
         }
-    }
+    } while(true);
 
     // Cleanup
     mpz_clear(i2);
