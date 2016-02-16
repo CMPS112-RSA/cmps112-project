@@ -114,25 +114,3 @@ void get_e(mpz_t out, mpz_t totient) {
     // Cleanup
     mpz_clear(gcd);
 }
-
-// (d)(e) % totient = 1
-void get_d(mpz_t out, mpz_t e, mpz_t totient) {
-    mpz_t i1, i2; // Intermediates
-    mpz_init(i1);
-    mpz_init(i2);
-
-    mpz_set(out, totient);
-    do {
-        mpz_add_ui(out, out, 1);
-        mpz_mul(i1, out, e);      // i1 = d * e
-        mpz_mod(i2, i1, totient); // i2 = i1 % totient
-        gmp_printf("(%Zd * %Zd) = %Zd %% %Zd = %Zd\n", out, e, i1, totient, i2);
-        if(mpz_cmp_ui(i2, 1) == 0) {
-            break;
-        }
-    } while(true);
-
-    // Cleanup
-    mpz_clear(i2);
-    mpz_clear(i1);
-}
