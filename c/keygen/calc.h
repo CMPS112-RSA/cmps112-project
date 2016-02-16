@@ -17,7 +17,7 @@ void get_totient(mpz_t out, mpz_t p, mpz_t q);
 void get_e(mpz_t out, mpz_t totient);
 
 static inline void get_d(mpz_t out, mpz_t e, mpz_t totient) {
-    mpz_invert(out, totient, e);
+    mpz_invert(out, e, totient);
 }
 
 #endif /* __KEYGEN_CALC_H__ */
