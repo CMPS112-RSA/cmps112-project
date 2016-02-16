@@ -45,5 +45,8 @@ int main(int argc, char* argv[]) {
     }
     printf("Message decrypted.\n");
 
+    rsa_free_private_key(&privkey);
+    rsa_free_public_key(&pubkey);
+
     return 0;
 }
