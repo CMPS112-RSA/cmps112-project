@@ -72,8 +72,8 @@ def main():
     # M = c^d mod n
 
     n = 143
-    e = 7
-    d = 103
+    e = 7    # pub
+    d = 103  # priv
 
     if not in_file=="" and not out_file=="":
         if encrypt_opt:
