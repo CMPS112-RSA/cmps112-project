@@ -5,6 +5,9 @@
 
 #include <stdint.h>
 
+/*
+ * Returns a prime number in the range (1000000,2^32-1).
+ */
 void get_prime(mpz_t out);
 
 // n = p * q
