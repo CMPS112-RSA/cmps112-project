@@ -35,17 +35,12 @@ int encrypt_message(
         goto done;
     }
 
-    // Open file for encrypted output, write modulo value to it
+    // Open file for encrypted output
     FILE* output_file = fopen(output_filename, "w");
     if(!output_file) {
         fprintf(stderr, "Failed to open output file.\n");
         status_code = 1;
         goto cleanup_input_file;
-    }
-    if(write_num(output_file, key->n)) {
-        fprintf(stderr, "Failed to write modulo number to encrypted file.\n");
-        status_code = 1;
-        goto cleanup_output_file;
     }
 
     // Initialize GMP data
@@ -77,7 +72,6 @@ int encrypt_message(
     cleanup_gmp_nums:
         mpz_clear(output_num);
         mpz_clear(input_byte);
-    cleanup_output_file:
         fclose(output_file);
     cleanup_input_file:
         fclose(input_file);
@@ -93,23 +87,13 @@ int decrypt_message(
 ) {
     int status_code = 0;
 
-    // Open input file, read modulo number
+    // Open input file
     FILE* input_file = fopen(input_filename, "r");
     if(!input_file) {
         fprintf(stderr, "Failed to open input file.\n");
         status_code = 1;
         goto done;
     }
-    mpz_t key_n;
-    mpz_init(key_n);
-    memset(num_buffer, '\0', BUFFER_LEN);
-    char* line = fgets(num_buffer, BUFFER_LEN, input_file);
-    if(!line) {
-        fprintf(stderr, "Failed to read modulo number from encrypted file.\n");
-        status_code = 1;
-        goto done;
-    }
-    mpz_set_str(key_n, num_buffer, 10);
 
     // Open output file
     FILE* output_file = fopen(output_filename, "w");
@@ -127,7 +111,7 @@ int decrypt_message(
     while(1) {
         // Read ASCII number
         memset(num_buffer, '\0', BUFFER_LEN);
-        line = fgets(num_buffer, BUFFER_LEN, input_file);
+        char* line = fgets(num_buffer, BUFFER_LEN, input_file);
         if(feof(input_file)) {
             break;
         } else if(!line) {
@@ -144,7 +128,7 @@ int decrypt_message(
         }
 
         // Decrypt
-        mpz_powm(output_byte, input_num, key->d, key_n); // out = (in ^ d) % n
+        mpz_powm(output_byte, input_num, key->d, key->n); // out = (in ^ d) % n
 
         // Write character to output file
         if(fprintf(output_file, "%c", (char)mpz_get_si(output_byte)) < 1) {
@@ -160,7 +144,6 @@ int decrypt_message(
         mpz_clear(input_num);
         fclose(output_file);
     cleanup_input_file:
-        mpz_clear(key_n);
         fclose(input_file);
 
     done:
