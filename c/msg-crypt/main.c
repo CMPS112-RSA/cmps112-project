@@ -1,52 +1,145 @@
+// Needed for Clang to see strdup
+#define _POSIX_C_SOURCE 200809L
+
 #include "crypt.h"
+#include <rsa-lib/getopt.h>
 #include <rsa-lib/rsa.h>
 
+#include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void print_help() {
+}
 
 int main(int argc, char* argv[]) {
-    (void)argc;
-    (void)argv;
 
-    if(argc != 6) {
-        fprintf(stderr, "exec priv_key pub_key msg_file\n");
-        return 1;
-    }
+    int return_code = EXIT_SUCCESS;
+    int option = 0;
+    char* key_filename = NULL;
+    char* input_filename = NULL;
+    char* output_filename = NULL;
+
+    // Separating bools forces user to specify one
+    bool encrypt = false;
+    bool decrypt = true;
 
     rsa_private_key_t privkey;
     rsa_public_key_t pubkey;
 
-    const char* privkey_file   = argv[1];
-    const char* pubkey_file    = argv[2];
-    const char* input_file     = argv[3];
-    const char* encrypted_file = argv[4];
-    const char* output_file    = argv[5];
+    if((option = getopt(argc, argv, "dei:o:k:")) == -1) {
+        switch(option) {
+            case 'd':
+                decrypt = true;
+                break;
 
-    // Import keys
-    if(rsa_init_private_key(privkey_file, &privkey)) {
-        fprintf(stderr, "Failed to import private key. Exiting.\n");
-        return 1;
-    }
-    printf("Private key imported.\n");
-    if(rsa_init_public_key(pubkey_file, &pubkey)) {
-        fprintf(stderr, "Failed to import public key. Exiting.\n");
-        return 1;
-    }
-    printf("Public key imported.\n");
+            case 'e':
+                encrypt = true;
+                break;
 
-    // Encrypt and decrypt
-    if(encrypt_message(input_file, encrypted_file, &privkey)) {
-        fprintf(stderr, "Failed to encrypt message. Exiting.\n");
-        return 1;
-    }
-    printf("Message encrypted.\n");
-    if(decrypt_message(encrypted_file, output_file, &pubkey)) {
-        fprintf(stderr, "Failed to decrypt message.\n");
-        return 1;
-    }
-    printf("Message decrypted.\n");
+            case 'i':
+                input_filename = strdup(optarg);
+                break;
 
-    rsa_free_private_key(&privkey);
-    rsa_free_public_key(&pubkey);
+            case 'o':
+                output_filename = strdup(optarg);
+                break;
 
-    return 0;
+            case 'k':
+                key_filename = strdup(optarg);
+                break;
+
+            default:
+                print_help();
+                return_code = EXIT_FAILURE;
+                goto free_arg_strings;
+        }
+    }
+
+    /*
+     * Validate options
+     */
+    if(!input_filename) {
+        fprintf(stderr, "You must give an input filename.");
+        return_code = EXIT_FAILURE;
+        goto free_arg_strings;
+    }
+    if(!output_filename) {
+        fprintf(stderr, "You must give an output filename.");
+        return_code = EXIT_FAILURE;
+        goto free_arg_strings;
+    }
+    if(!key_filename) {
+        fprintf(stderr, "You must give a key filename.");
+        return_code = EXIT_FAILURE;
+        goto free_arg_strings;
+    }
+    if(!decrypt && !encrypt) {
+        fprintf(stderr, "You must specify encryption or decryption.");
+        return_code = EXIT_FAILURE;
+        goto free_arg_strings;
+    }
+
+    /*
+     * Primary functionality
+     */
+
+    if(encrypt) {
+        // Import private key
+        if(rsa_init_private_key(key_filename, &privkey)) {
+            fprintf(stderr, "Failed to import private key. Exiting.\n");
+            return_code = EXIT_FAILURE;
+            goto free_arg_strings;
+        }
+        printf("Private key imported.\n");
+
+        // Encryption
+        if(encrypt_message(input_filename, output_filename, &privkey)) {
+            fprintf(stderr, "Failed to encrypt message. Exiting.\n");
+            return_code = EXIT_FAILURE;
+            goto free_rsa_key;
+        }
+        printf("Message encrypted.\n");
+    } else {
+        // Import public key
+        if(rsa_init_public_key(key_filename, &pubkey)) {
+            fprintf(stderr, "Failed to import public key. Exiting.\n");
+            return_code = EXIT_FAILURE;
+            goto free_arg_strings;
+        }
+        printf("Public key imported.\n");
+
+        // Decryption
+        if(decrypt_message(input_filename, output_filename, &pubkey)) {
+            fprintf(stderr, "Failed to decrypt message.\n");
+            return_code = EXIT_FAILURE;
+            goto free_rsa_key;
+        }
+        printf("Message decrypted.\n");
+    }
+
+    /*
+     * Cleanup
+     */
+
+    free_rsa_key:
+        if(encrypt) {
+            rsa_free_private_key(&privkey);
+        } else {
+            rsa_free_public_key(&pubkey);
+        }
+
+    free_arg_strings:
+        if(key_filename) {
+            free(key_filename);
+        }
+        if(output_filename) {
+            free(output_filename);
+        }
+        if(input_filename) {
+            free(input_filename);
+        }
+
+    return return_code;
 }
