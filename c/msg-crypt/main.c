@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 
     // Separating bools forces user to specify one
     bool encrypt = false;
-    bool decrypt = true;
+    bool decrypt = false;
 
     rsa_private_key_t privkey;
     rsa_public_key_t pubkey;

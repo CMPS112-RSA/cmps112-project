@@ -15,10 +15,16 @@ static inline void get_n(mpz_t out, mpz_t p, mpz_t q) {
     mpz_mul(out, p, q);
 }
 
+// totient = (p - 1)(q - 1)
 void get_totient(mpz_t out, mpz_t p, mpz_t q);
 
+/*
+ * 1 < e < totient
+ * gcd(e, totient) = 1
+ */
 void get_e(mpz_t out, mpz_t totient);
 
+// (d)(e) % totient = 1
 static inline void get_d(mpz_t out, mpz_t e, mpz_t totient) {
     mpz_invert(out, e, totient);
 }

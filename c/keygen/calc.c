@@ -78,7 +78,6 @@ void get_prime(mpz_t out) {
     mpz_set_ui(out, num);
 }
 
-// totient = (p-1)(q-1)
 void get_totient(mpz_t out, mpz_t p, mpz_t q) {
     mpz_t p2, q2;
     mpz_init(p2);
@@ -93,8 +92,6 @@ void get_totient(mpz_t out, mpz_t p, mpz_t q) {
     mpz_clear(p2);
 }
 
-// 1 < e < totient
-// gcd(e,totient) = 1
 void get_e(mpz_t out, mpz_t totient) {
     mpz_t gcd;
     mpz_init(gcd);
