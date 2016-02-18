@@ -3,6 +3,7 @@
 
 import System.Random
 import Data.Word
+import System.Environment
 
 divisors :: Integer -> [Integer]
 divisors 1 = [1]
@@ -42,23 +43,21 @@ genD totient public = modInv public totient
 --seed = getStdGen
 
 main = do
+         args <- getArgs
          seed <- newStdGen
-         print "Generating P..."
          let p = genPrime seed
-         print p
          seed <- newStdGen
-         print "Generating Q..."
          let q = genPrime seed
-         print q
-         print "Generating T..."
-         let t = (p-1) * (q-1)
-         print t
          print "Generating N..."
          let n = p * q
-         print n
+         writeFile (args!!0) (show n)
+         appendFile (args!!0) "\n"
+         writeFile (args!!1) (show n)
+         appendFile (args!!1) "\n"
+         let t = (p-1) * (q-1)
          print "Generating E..."
          let e = genE t
-         print e
+         appendFile (args!!0) (show e)
          print "Generating D..."
-         let d =genD t e
-         print d
+         let d = genD t e
+         appendFile (args!!1) (show d)
