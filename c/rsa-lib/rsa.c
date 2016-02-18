@@ -108,13 +108,14 @@ int rsa_init_public_key(
 void rsa_free_private_key(
     rsa_private_key_t* key
 ) {
-    mpz_clear(key->e);
     mpz_clear(key->n);
+    mpz_clear(key->e);
 }
 
 void rsa_free_public_key(
     rsa_public_key_t* key
 ) {
+    mpz_clear(key->n);
     mpz_clear(key->d);
 }
 
