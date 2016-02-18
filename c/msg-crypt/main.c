@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     rsa_private_key_t privkey;
     rsa_public_key_t pubkey;
 
-    if((option = getopt(argc, argv, "dei:o:k:")) == -1) {
+    while((option = getopt(argc, argv, "dei:o:k:")) != -1) {
         switch(option) {
             case 'd':
                 decrypt = true;
@@ -61,22 +61,22 @@ int main(int argc, char* argv[]) {
      * Validate options
      */
     if(!input_filename) {
-        fprintf(stderr, "You must give an input filename.");
+        fprintf(stderr, "You must give an input filename.\n");
         return_code = EXIT_FAILURE;
         goto free_arg_strings;
     }
     if(!output_filename) {
-        fprintf(stderr, "You must give an output filename.");
+        fprintf(stderr, "You must give an output filename.\n");
         return_code = EXIT_FAILURE;
         goto free_arg_strings;
     }
     if(!key_filename) {
-        fprintf(stderr, "You must give a key filename.");
+        fprintf(stderr, "You must give a key filename.\n");
         return_code = EXIT_FAILURE;
         goto free_arg_strings;
     }
     if(!decrypt && !encrypt) {
-        fprintf(stderr, "You must specify encryption or decryption.");
+        fprintf(stderr, "You must specify encryption or decryption.\n");
         return_code = EXIT_FAILURE;
         goto free_arg_strings;
     }

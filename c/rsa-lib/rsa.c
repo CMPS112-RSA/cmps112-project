@@ -92,7 +92,7 @@ int rsa_init_public_key(
     }
 
     // Make sure this line is actually a number
-    if(mpz_init_set_str(key->n, key_buffer, 10) == -1) {
+    if(mpz_init_set_str(key->d, key_buffer, 10) == -1) {
         fprintf(stderr, "Second line of public key file is not a number.\n");
         mpz_clear(key->d);
         mpz_clear(key->n);

@@ -26,10 +26,11 @@ int main(int argc, char** argv) {
     setbuf(stdout, NULL);
 
     rsa_private_key_t privkey;
-    mpz_init(privkey.e);
     mpz_init(privkey.n);
+    mpz_init(privkey.e);
 
     rsa_public_key_t pubkey;
+    mpz_init(pubkey.n);
     mpz_init(pubkey.d);
 
     mpz_t p, q, totient;
@@ -47,6 +48,7 @@ int main(int argc, char** argv) {
 
     printf("Generating n...");
     get_n(privkey.n, p, q);
+    get_n(pubkey.n, p, q);
     gmp_printf("%Zd.\n", privkey.n);
 
     printf("Calculating totient...");
@@ -76,8 +78,9 @@ int main(int argc, char** argv) {
         mpz_clear(q);
         mpz_clear(p);
         mpz_clear(pubkey.d);
-        mpz_clear(privkey.n);
+        mpz_clear(pubkey.n);
         mpz_clear(privkey.e);
+        mpz_clear(privkey.n);
 
     return 0;
 }
