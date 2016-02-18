@@ -8,7 +8,6 @@ import Data.Char
 import System.Environment
 import Data.ByteString.Char8
 import qualified Data.List.Split as DLS
---import Data.ByteString.Base64.Lazy (encode, decode)
 
 encryptCharacter :: Integer -> Integer -> Integer -> Integer
 encryptCharacter char keyN keyE = mod powop keyN where powop = char ^ keyE

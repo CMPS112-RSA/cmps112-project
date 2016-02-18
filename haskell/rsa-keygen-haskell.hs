@@ -1,5 +1,7 @@
 -- Ryan Coley
 -- rsa-keygen-haskell.hs
+-- Generates RSA keys
+-- rsa-keygen-haskell [public] [private]
 
 import System.Random
 import Data.Word
@@ -25,6 +27,8 @@ genPrime seed = primeNums!!select where select = genRandom seed
 genE :: Integer -> Integer
 genE totient = [ e | e <- [2..totient], (gcd totient e) == 1]!!0
 
+
+{- Got this code from http://rosettacode.org/wiki/Modular_inverse#Haskell and modified it to fit my needs -}
 gcdExt :: Integer -> Integer -> (Integer, Integer, Integer)
 gcdExt a 0 = (1, 0, a)
 gcdExt a b = let (q, r) = a `quotRem` b
@@ -35,15 +39,14 @@ modInv :: Integer -> Integer -> Integer
 modInv a m = let (i, _, g) = gcdExt a m in
              if g == 1 then (mkPos i) else -1
              where mkPos x = if x < 0 then x + m else x
+{- End -}
 
 genD :: Integer -> Integer -> Integer
 genD totient public = modInv public totient
 
---seed :: IO StdGen
---seed = getStdGen
-
 main = do
          args <- getArgs
+         if (length args) \= 2 then error "USAGE: rsa-keygen-haskell public private"
          seed <- newStdGen
          let p = genPrime seed
          seed <- newStdGen
