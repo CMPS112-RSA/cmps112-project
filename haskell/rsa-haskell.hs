@@ -34,7 +34,6 @@ integerToString x = Prelude.map (\y -> show y) x
 stringToInteger :: [String] -> [Integer]
 stringToInteger x = Prelude.map (\y -> read y :: Integer) x
 
-
 correctDecrypt :: [B.Word8] -> [B.Word8] -> Bool
 correctDecrypt [] [] = True
 correctDecrypt _ [] = False
@@ -45,16 +44,7 @@ correctDecrypt (x:xs) (y:ys) = if x /= y then False else correctDecrypt xs ys
 
 main = do
           args <- getArgs
-          --mapM SIO.putStrLn args
           contents <- BL.readFile (args!!0)
-          --SIO.putStr "Encrypted\n"
-          --print (encryptMsg (BL.unpack contents) 143 7)
-          --SIO.putStr "\n\n\nDecrypted\n"
-          --print (decryptMsg (encryptMsg (BL.unpack contents) 143 7) 103 143)
-          --SIO.putStr "\n\n\nOriginal\n"
-          --print (BL.unpack contents)
-          --if (correctDecrypt (BL.unpack contents) (decryptMsg (encryptMsg (BL.unpack contents) 143 7) 103 143)) then SIO.putStrLn "True" else SIO.putStrLn "False"
-          --print ((decryptMsg (encryptMsg (BL.unpack contents) 5917 5027) 1163 5917)!!0)
           Prelude.mapM (\x -> Prelude.appendFile "print3DArray.txt" (x ++ "\n")) (integerToString (encryptMsg (BL.unpack contents) 5917 5027))
           encryptedFileResults <- Prelude.readFile "print3DArray.txt"
           let splitted = (Prelude.init (DLS.splitOn "\n" encryptedFileResults)) in BL.writeFile "print3DArray_result.class" (BL.pack (decryptMsg (stringToInteger splitted) 1163 5917))
