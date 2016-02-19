@@ -1,7 +1,7 @@
 -- Ryan Coley
 -- rsa-keygen-haskell.hs
 -- Generates RSA keys
--- rsa-keygen-haskell [public] [private]
+-- rsa-keygen-haskell [private] [public]
 
 import System.Random
 import Data.Word
@@ -46,21 +46,21 @@ genD totient public = modInv public totient
 
 main = do
          args <- getArgs
-         if (length args) \= 2 then error "USAGE: rsa-keygen-haskell public private"
+         if (length args) \= 2 then error "USAGE: rsa-keygen-haskell private public"
          seed <- newStdGen
          let p = genPrime seed
          seed <- newStdGen
          let q = genPrime seed
          print "Generating N..."
          let n = p * q
-         writeFile (args!!0) (show n)
-         appendFile (args!!0) "\n"
          writeFile (args!!1) (show n)
          appendFile (args!!1) "\n"
+         writeFile (args!!0) (show n)
+         appendFile (args!!0) "\n"
          let t = (p-1) * (q-1)
          print "Generating E..."
          let e = genE t
-         appendFile (args!!0) (show e)
+         appendFile (args!!1) (show e)
          print "Generating D..."
          let d = genD t e
-         appendFile (args!!1) (show d)
+         appendFile (args!!0) (show d)

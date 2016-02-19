@@ -1,5 +1,7 @@
 -- Ryan Coley
--- rsa.hs
+-- rsa-haskell.hs
+--Encrypts and Decrypts files using RSA
+--rsa-haskell [-ed encrypt/decrypt] [-k key] [-f file] [-o output]
 
 import qualified System.IO as SIO
 import qualified Data.ByteString.Lazy as BL
@@ -8,6 +10,7 @@ import Data.Char
 import System.Environment
 import Data.ByteString.Char8
 import qualified Data.List.Split as DLS
+import System.Console.CmdArgs
 
 encryptCharacter :: Integer -> Integer -> Integer -> Integer
 encryptCharacter char keyN keyE = mod powop keyN where powop = char ^ keyE
@@ -33,17 +36,28 @@ integerToString x = Prelude.map (\y -> show y) x
 stringToInteger :: [String] -> [Integer]
 stringToInteger x = Prelude.map (\y -> read y :: Integer) x
 
-correctDecrypt :: [B.Word8] -> [B.Word8] -> Bool
-correctDecrypt [] [] = True
-correctDecrypt _ [] = False
-correctDecrypt [] _ = False
-correctDecrypt (x:xs) (y:ys) = if x /= y then False else correctDecrypt xs ys
+data RSA = Encrypt {key :: String, file :: String, output :: String}
+         | Decrypt {key :: String, file :: String, output :: String}
+           deriving (Show, Data, Typeable)
 
---to get file contents BL.readFile (args!!0)
+encrypt = Encrypt {
+    key = def &= typFile &= help "RSA Public Key",
+    file = def &= typFile &= help "File to encrypt",
+    output = def &= opt "encrypted_file.enc" &= typFile &= help "Output encrypted file"
+} &= help "Encrypt Files"
 
-main = do
+decrypt = Decrypt {
+    key = def &= typFile &= help "RSA Private Key",
+    file = def &= typFile &= help "File to decrypt",
+    output = def &= typFile &= help "Output decrypted file"
+} &= help "Decrypt Files"
+
+main = print =<< cmdArgs ( modes [encrypt,decrypt]
+                                 &= help "Basic RSA implementation"
+                                 &= summary "rsa-haskell v0.1")
+{-do
           args <- getArgs
           contents <- BL.readFile (args!!0)
           Prelude.mapM (\x -> Prelude.appendFile "print3DArray.txt" (x ++ "\n")) (integerToString (encryptMsg (BL.unpack contents) 5917 5027))
           encryptedFileResults <- Prelude.readFile "print3DArray.txt"
-          let splitted = (Prelude.init (DLS.splitOn "\n" encryptedFileResults)) in BL.writeFile "print3DArray_result.class" (BL.pack (decryptMsg (stringToInteger splitted) 1163 5917))
+          let splitted = (Prelude.init (DLS.splitOn "\n" encryptedFileResults)) in BL.writeFile "print3DArray_result.class" (BL.pack (decryptMsg (stringToInteger splitted) 1163 5917))-}

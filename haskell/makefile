@@ -1,11 +1,11 @@
 rsa:
-	ghc rsa-haskell.hs
+	ghc -XDeriveDataTypeable rsa-haskell.hs
 
 keygen:
 	ghc rsa-keygen-haskell.hs
 
 test-keygen: clean keygen
-	rsa-keygen-haskell public private
+	rsa-keygen-haskell private public
 	cat public
 	cat private
 
