@@ -4,14 +4,14 @@ rsa:
 keygen:
 	ghc rsa-keygen-haskell.hs
 
-test-keygen: clean keygen
+test-keygen: keygen
 	rsa-keygen-haskell private public
 	cat public
 	cat private
 
-test-rsa: clean rsa test-keygen
-	rsa-haskell -e -k public -f README.md -o encryptedTestFile.enc
-	rsa-haskell -e -k private -f encryptedTestFile.enc -o encryptedTestFile.md
+test-rsa: rsa test-keygen
+	rsa-haskell encrypt -k public -f README.md -o encryptedTestFile.enc
+	rsa-haskell decrypt -k private -f encryptedTestFile.enc -o encryptedTestFile.md
 	cat encryptedTestFile.md
 
 clean:
