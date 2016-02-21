@@ -22,21 +22,8 @@ class gen {
       ulong bit = (getBin() * (ulong) Math.Pow(2, i));
       output = output + (IntX) bit;
     }
-    Console.WriteLine(output);
     return output;
   }
-
-  public static bool isPrime(IntX num) {
-    if(num % 2 == 0) {
-      return false;
-    }
-    for(IntX i = num - 1; i > 2; i--) {
-      if(num % i == 0) {
-        return false;
-      }
-    }
-    return true;
-}
 
 public static bool isPrime_new(IntX num) {
   if(num < 2) {
@@ -55,13 +42,11 @@ public static bool isPrime_new(IntX num) {
   }
   return true;
 }
-
   public static IntX genRandPrime(IntX index) {
       IntX p = 0;
       while(true) {
         p = genRand();
-        Console.WriteLine(p);
-        if(isPrime(p)) {
+        if(isPrime_new(p)) {
           break;
         }
       }
@@ -78,11 +63,8 @@ public static bool isPrime_new(IntX num) {
 
   public static IntX[] genN() {
     IntX[] output = new IntX[3];
-    //Console.WriteLine("Generating p...");
     output[0] = genRandPrime(1);
-    //Console.WriteLine("Generating q...");
     output[1] = genRandPrime(1);
-    //Console.WriteLine("Generating n...");
     output[2] = output[0] * output[1];
 
     return output;
@@ -145,39 +127,39 @@ public static bool isPrime_new(IntX num) {
     else
     {
         // m is added to handle negative x
-        IntX res = (g[1] % m + m) % m;
+        IntX res = (g[2] % m + m) % m;
         return res;
     }
-}
+  }
 
+  public static void writeKeys(IntX n, IntX e, IntX d, string pubPath, string privPath) {
+    string[] pub = new string[2];
+    pub[0] = n.ToString();
+    pub[1] = e.ToString();
+    System.IO.File.WriteAllLines(pubPath, pub);
 
-  public static IntX genD(IntX e, IntX totient) {
-    IntX output = 0;
-    //Console.WriteLine("Generating d...");
-    for(IntX d = 3; d < totient; d++) {
-      if((d*e) % totient == 1) {
-        output = d;
-        break;
-      }
-    }
-    return output;
+    string[] pri = new string[2];
+    pri[0] = n.ToString();
+    pri[1] = d.ToString();
+    System.IO.File.WriteAllLines(privPath, pri);
+
   }
 
   public static void Main() {
-    IntX dp = 0;
-    while(dp < 32) {
-      IntX[] npq = genN();
-      IntX e = genE(npq);
-      //Console.WriteLine("Generating d...");
-      IntX d = modInverse(e, ((npq[0] -1) * (npq[1] - 1)));
-      dp = d;
-      Console.Write("n=");
-      Console.Write(npq[2]);
-      Console.Write(", e=");
-      Console.Write(e);
-      Console.Write(", d=");
-      Console.Write(d);
-      Console.WriteLine("");
-    }
+
+    string[] args = Environment.GetCommandLineArgs();
+
+    IntX[] npq = genN();
+    IntX e = genE(npq);
+    IntX d = modInverse(e, ((npq[0] -1) * (npq[1] - 1)));
+    Console.Write("n=");
+    Console.Write(npq[2]);
+    Console.Write(", e=");
+    Console.Write(e);
+    Console.Write(", d=");
+    Console.Write(d);
+    Console.WriteLine("");
+
+    writeKeys(npq[2], e, d, args[1], args[2]);
   }
 }

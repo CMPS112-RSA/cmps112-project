@@ -6,17 +6,35 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class read {
-  public static readonly string[] options = {"-f", "-o", "-k"};
+  public static readonly string[] options = {"-i", "-o", "-k"};
+  public static readonly string[] s = {"-e", "-d"};
   public static byte[] readFile(string name) {
     return File.ReadAllBytes(name);
   }
 
   public static Dictionary <string, string> getopt(string[] args) {
     Dictionary<string, string> parsed = new Dictionary <string, string>();
+
+    for(int opt = 0; opt < options.Length; opt++) {
+      parsed.Add(options[opt], "");
+    }
+
+    for(int opt = 0; opt < s.Length; opt++) {
+      parsed.Add(s[opt], "False");
+    }
+
     for(int i = 0; i < args.Length - 1; i++) {
-      for(int opt = 0; i < options.Length; i++) {
-        if(args[i].Equals(options[opt])) {
-          parsed.Add(options[opt], args[i+1]);
+      for(int opt = 0; opt < s.Length; opt++) {
+        if(args[i].Equals(s[opt])) {
+          parsed[s[opt]] = "True";
+        }
+      }
+    }
+
+    for(int i = 0; i < args.Length - 1; i++) {
+      for(int opt = 0; opt < options.Length; opt++) {
+        if(args[i].Equals(options[opt]) && i <= args.Length-2) {
+          parsed[options[opt]] = args[i+1];
         }
       }
     }
@@ -24,12 +42,6 @@ public class read {
   }
 
   public static IntX power(IntX x, IntX n) {
-    //IntX i, output = 1;
-    //for(i = 0; i < b; i++) {
-      //output *= a;
-      //output = IntX.Multiply(output, a, MultiplyMode.AutoFht);
-    //}
-    //return output;
     if(n < 0) {
       x = 1 / x;
       n = n * -1;
@@ -164,21 +176,37 @@ public class read {
     return dec;
   }
 
+  public static IntX[] readKey(string path) {
+    int lineCount = File.ReadLines(path).Count();
+    IntX[] fromFile = new IntX[lineCount];
+    int count = 0;
+
+    foreach (string line in File.ReadLines(path)) {
+      fromFile[count] = stringToInt(line);
+      count++;
+    }
+    return fromFile;
+  }
+
   public static void Main() {
       string[] args = Environment.GetCommandLineArgs();
-      string filePath = args[1];
+      Dictionary<string, string> parsed = getopt(args);
+      string filePath = parsed["-i"];
+      string outfile = parsed["-o"];
 
-      byte[] file = readFile(filePath);
-      IntX[] encrypted = encrypt(file, Int64.Parse(args[2]), Int64.Parse(args[3]));
+      IntX[] key = readKey(parsed["-k"]);
 
-      writeToFile(encrypted, args[5], Int64.Parse(args[2]), Int64.Parse(args[3]));
+      if(parsed["-e"].Equals("True")){
+        Console.WriteLine("Encrypting...");
+        byte[] file = readFile(filePath);
+        IntX[] encrypted = encrypt(file, key[0], key[1]);
+        writeToFile(encrypted, outfile, key[0], key[1]);
 
-      Console.Write("--------------------------\n");
-      IntX[] decfile = decryptfromFile(args[5], Int64.Parse(args[4]));
-      for(int i = 0; i < decfile.Length; i++) {
-        //Console.Write((char) decfile[i]);
+      }else if(parsed["-d"].Equals("True")) {
+        Console.WriteLine("Decrypting...");
+        IntX[] decfile = decryptfromFile(filePath, key[1]);
+        writeDecToFile(outfile, decfile);
       }
-      writeDecToFile(args[6], decfile);
 
   }
 }
