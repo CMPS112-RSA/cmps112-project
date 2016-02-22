@@ -61,6 +61,7 @@ static uint32_t get_random_number() {
         srand(time(NULL));
         return rand();
     }
+    // Don't accept numbers < 10 million
     while(ret < 10000000) {
         read(fd, &ret, 4);
     }
@@ -98,12 +99,12 @@ void get_e(mpz_t out, mpz_t totient) {
 
     while(true) {
         mpz_set_ui(out, get_random_number());
-        if(mpz_cmp(out, totient) >= 0) {
+        if(mpz_cmp(out, totient) >= 0) { // Make sure e < totient
             continue;
         }
 
         mpz_gcd(gcd, out, totient);
-        if(mpz_cmp_ui(gcd, 1) == 0) {
+        if(mpz_cmp_ui(gcd, 1) == 0) { // Make sure GCD(e, totient) = 0
             break;
         }
     }

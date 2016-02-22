@@ -1,4 +1,10 @@
-This directory contains this project's C implementation. To build it, you will need to install the following:
+This directory contains this project's C implementation.
+
+------------------------
+BUILD INFORMATION
+------------------------
+
+To build it, you will need to install the following:
 
 * CMake
 * GNU Multiple Precision Library (GMP)
@@ -12,3 +18,13 @@ sudo yum install cmake gmp-devel
 On other UNIX-like platforms, both of these projects are likely included in their respective package distribution systems.
 
 Note that this implementation does not work on Windows platforms.
+
+------------------------
+GMP API INFORMATION
+------------------------
+
+This implementation uses GMP for its bigint storage and calculations. While I have made sure to comment
+code that uses GMP as much as is reasonable, more information can be found here:
+
+Initialization:    http://web.mit.edu/gnu/doc/html/gmp_3.html
+Integer Functions: http://web.mit.edu/gnu/doc/html/gmp_4.html
