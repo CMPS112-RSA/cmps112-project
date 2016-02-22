@@ -58,7 +58,7 @@ int encrypt_message(
 
         // Encrypt
         mpz_set_si(input_byte, input_num);
-        mpz_powm(output_num, input_byte, key->e, key->n); // out = (in ^ e) % n
+        mpz_powm(output_num, input_byte, key->d, key->n); // out = (in ^ d) % n
 
         // Write to output file
         if(write_num(output_file, output_num)) {
@@ -128,7 +128,7 @@ int decrypt_message(
         }
 
         // Decrypt
-        mpz_powm(output_byte, input_num, key->d, key->n); // out = (in ^ d) % n
+        mpz_powm(output_byte, input_num, key->e, key->n); // out = (in ^ e) % n
 
         // Write character to output file
         if(fprintf(output_file, "%c", (char)mpz_get_si(output_byte)) < 1) {

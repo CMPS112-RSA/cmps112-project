@@ -43,9 +43,9 @@ int rsa_init_private_key(
     }
 
     // Make sure this line is actually a number
-    if(mpz_init_set_str(key->e, key_buffer, 10) == -1) {
+    if(mpz_init_set_str(key->d, key_buffer, 10) == -1) {
         fprintf(stderr, "Second line of private key file is not a number.\n");
-        mpz_clear(key->e);
+        mpz_clear(key->d);
         mpz_clear(key->n);
         fclose(input_key);
         return 1;
@@ -92,9 +92,9 @@ int rsa_init_public_key(
     }
 
     // Make sure this line is actually a number
-    if(mpz_init_set_str(key->d, key_buffer, 10) == -1) {
+    if(mpz_init_set_str(key->e, key_buffer, 10) == -1) {
         fprintf(stderr, "Second line of public key file is not a number.\n");
-        mpz_clear(key->d);
+        mpz_clear(key->e);
         mpz_clear(key->n);
         fclose(input_key);
         return 1;
@@ -109,14 +109,14 @@ void rsa_free_private_key(
     rsa_private_key_t* key
 ) {
     mpz_clear(key->n);
-    mpz_clear(key->e);
+    mpz_clear(key->d);
 }
 
 void rsa_free_public_key(
     rsa_public_key_t* key
 ) {
     mpz_clear(key->n);
-    mpz_clear(key->d);
+    mpz_clear(key->e);
 }
 
 int rsa_write_private_key(
@@ -145,8 +145,8 @@ int rsa_write_private_key(
 
     // Place second number into buffer
     memset(key_buffer, '\0', BUFFER_LEN);
-    mpz_get_str(key_buffer, 10, key->e);
-    ascii_size = mpz_sizeinbase(key->e, 10) + 2;
+    mpz_get_str(key_buffer, 10, key->d);
+    ascii_size = mpz_sizeinbase(key->d, 10) + 2;
 
     // Write second number to file
     written = fwrite(key_buffer, 1, ascii_size, output_key);
@@ -187,8 +187,8 @@ int rsa_write_public_key(
 
     // Place second number into buffer
     memset(key_buffer, '\0', BUFFER_LEN);
-    mpz_get_str(key_buffer, 10, key->d);
-    ascii_size = mpz_sizeinbase(key->d, 10) + 2;
+    mpz_get_str(key_buffer, 10, key->e);
+    ascii_size = mpz_sizeinbase(key->e, 10) + 2;
 
     // Write second number to file
     written = fwrite(key_buffer, 1, ascii_size, output_key);

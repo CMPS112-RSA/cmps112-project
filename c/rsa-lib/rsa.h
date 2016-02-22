@@ -5,12 +5,12 @@
 
 typedef struct {
     mpz_t n;
-    mpz_t e;
+    mpz_t d;
 } rsa_private_key_t;
 
 typedef struct {
     mpz_t n;
-    mpz_t d;
+    mpz_t e;
 } rsa_public_key_t;
 
 /*

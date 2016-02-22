@@ -20,18 +20,18 @@ int main(int argc, char** argv) {
     }
 
     const char* privkey_filename = argv[1];
-    const char* pubkey_filename = argv[2];;
+    const char* pubkey_filename  = argv[2];
 
     // So we can output without a newline
     setbuf(stdout, NULL);
 
     rsa_private_key_t privkey;
     mpz_init(privkey.n);
-    mpz_init(privkey.e);
+    mpz_init(privkey.d);
 
     rsa_public_key_t pubkey;
     mpz_init(pubkey.n);
-    mpz_init(pubkey.d);
+    mpz_init(pubkey.e);
 
     mpz_t p, q, totient;
     mpz_init(p);
@@ -56,12 +56,12 @@ int main(int argc, char** argv) {
     gmp_printf("%Zd.\n", totient);
 
     printf("Calculating e...");
-    get_e(privkey.e, totient);
-    gmp_printf("%Zd.\n", privkey.e);
+    get_e(pubkey.e, totient);
+    gmp_printf("%Zd.\n", pubkey.e);
 
     printf("Calculating d...");
-    get_d(pubkey.d, privkey.e, totient);
-    gmp_printf("%Zd.\n", pubkey.d);
+    get_d(privkey.d, pubkey.e, totient);
+    gmp_printf("%Zd.\n", privkey.d);
 
     if(rsa_write_private_key(privkey_filename, &privkey)) {
         fprintf(stderr, "Failed to write private key file.\n");
@@ -77,9 +77,9 @@ int main(int argc, char** argv) {
         mpz_clear(totient);
         mpz_clear(q);
         mpz_clear(p);
-        mpz_clear(pubkey.d);
+        mpz_clear(privkey.d);
         mpz_clear(pubkey.n);
-        mpz_clear(privkey.e);
+        mpz_clear(pubkey.e);
         mpz_clear(privkey.n);
 
     return 0;
