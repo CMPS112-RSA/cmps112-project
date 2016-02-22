@@ -15,8 +15,8 @@ import System.Console.CmdArgs
 import Control.Monad
 
 --type casting functions
-convertWord8ToInteger :: [B.Word8] -> [Integer]
-convertWord8ToInteger char = Prelude.map (\x -> (read (show x) :: Integer)) char
+{-convertWord8ToInteger :: [B.Word8] -> [Integer]
+convertWord8ToInteger char = Prelude.map (\x -> (read (show x) :: Integer)) char-}
 
 convertIntegerToWord8 :: [Integer] -> [B.Word8]
 convertIntegerToWord8 int = Prelude.map (\x -> (read (show x) :: B.Word8)) int
@@ -28,14 +28,14 @@ stringToInteger :: [String] -> [Integer]
 stringToInteger x = Prelude.map (\y -> read y :: Integer) x
 
 --encrypting functions
-encryptCharacter :: Integer -> Integer -> Integer -> Integer
+{-encryptCharacter :: Integer -> Integer -> Integer -> Integer
 encryptCharacter char keyN keyE = mod powop keyN where powop = char ^ keyE
+
+encryptMsg :: [B.Word8] -> Integer -> Integer -> [Integer]
+encryptMsg msg keyN keyE = Prelude.map (\x -> encryptCharacter x keyN keyE) (convertWord8ToInteger msg)-}
 
 decryptCharacter :: Integer -> Integer -> Integer -> Integer
 decryptCharacter char keyD keyN = mod powop keyN where powop = char ^ keyD
-
-encryptMsg :: [B.Word8] -> Integer -> Integer -> [Integer]
-encryptMsg msg keyN keyE = Prelude.map (\x -> encryptCharacter x keyN keyE) (convertWord8ToInteger msg)
 
 decryptMsg :: [Integer] -> Integer -> Integer -> [B.Word8]
 decryptMsg msg keyD keyN = convertIntegerToWord8 (Prelude.map (\x -> decryptCharacter x keyD keyN) msg)
@@ -73,29 +73,21 @@ optionHandler opts@Encrypt{key = key, file = file, output=output}  = do
    keyFile <- SIO.readFile key
    let (keyN,keyE) = readKey keyFile
    contents <- BL.readFile file
-   Prelude.mapM (\x -> Prelude.appendFile output (x ++ "\n")) (integerToString (encryptMsg (BL.unpack contents) keyN keyE))
+   Prelude.mapM (\x -> Prelude.appendFile output ((show (mod ((toInteger x)^keyE) keyN) ++ "\n"))) (BL.unpack contents)
    SIO.putStrLn "Encryption Finished"
+
 optionHandler opts@Decrypt{key = key, file = file, output=output}  = do
    when (key == "") $ error "Key must be specified"
    when (file == "") $ error "File must be specified"
    when (output == "") $ error "Output must be specified"
    keyFile <- SIO.readFile key
    let (keyN, keyD) = readKey keyFile
-   encryptedFileResults <- Prelude.readFile file
+   encryptedFileResults <- SIO.readFile file
    let splitted = (Prelude.init (DLS.splitOn "\n" encryptedFileResults)) in BL.writeFile output (BL.pack (decryptMsg (stringToInteger splitted) keyD keyN))
    SIO.putStrLn "Decryption Finished"
-
 
 main = do
          opts <- cmdArgs ( modes [encrypt,decrypt]
                                  &= help "Basic RSA implementation"
                                  &= summary "rsa-haskell v0.1")
          optionHandler opts
-
-         --if (mode opts) == encrypt then SIO.putStrLn "Encrypt" else SIO.putStrLn "Decrypt"
-{-do
-          args <- getArgs
-          contents <- BL.readFile (args!!0)
-          Prelude.mapM (\x -> Prelude.appendFile "print3DArray.txt" (x ++ "\n")) (integerToString (encryptMsg (BL.unpack contents) 5917 5027))
-          encryptedFileResults <- Prelude.readFile "print3DArray.txt"
-          let splitted = (Prelude.init (DLS.splitOn "\n" encryptedFileResults)) in BL.writeFile "print3DArray_result.class" (BL.pack (decryptMsg (stringToInteger splitted) 1163 5917))-}
