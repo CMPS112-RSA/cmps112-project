@@ -21,59 +21,71 @@ public class read {
     return parsed;
   }
 
-  public static IntX power(IntX a, IntX b) {
-    IntX output = 1;
-    for(IntX i = 0; i < b; i++) {
-      output = output * a;
+  public static IntX power(IntX x, IntX n) {
+    //IntX i, output = 1;
+    //for(i = 0; i < b; i++) {
+      //output *= a;
+      //output = IntX.Multiply(output, a, MultiplyMode.AutoFht);
+    //}
+    //return output;
+    if(n < 0) {
+      x = 1 / x;
+      n = n * -1;
     }
-    return output;
+    if(n == 0) {
+      return 1;
+    }
+    IntX y = 1;
+    while(n > 1) {
+      if((n%2) == 0) {
+        x = x * x;
+        n = n / 2;
+      }else {
+        y = x * y;
+        x = x * x;
+        n = (n-1) / 2;
+      }
+    }
+    return x * y;
   }
 
-  public static byte[] encrypt(byte[] message, IntX key_n, IntX key_e) {
-    byte[] output = new byte [message.Length];
-    for(int i = 0; i < message.Length; i++) {
-      IntX powop = power(message[i], key_e);
-      byte t = (byte) IntX.Modulo(powop, key_n, DivideMode.AutoNewton);
+  public static IntX[] encrypt(byte[] message, IntX key_n, IntX key_e) {
+    IntX[] output = new IntX [message.Length];
+    for(uint i = 0; i < message.Length; i++) {
+      IntX powop = power((IntX) message[i], key_e);
+      IntX t = powop % key_n;
+      //Console.WriteLine(t);
       output[i] = t;
 
     }
     return output;
   }
 
-  public static byte[] decrypt(byte[] message, IntX key_d, IntX key_n) {
-    byte[] output = new byte[message.Length];
-    for(int i = 0; i < message.Length; i++) {
+  public static IntX[] decrypt(IntX[] message, IntX key_n, IntX key_d) {
+    IntX[] output = new IntX[message.Length];
+    Console.WriteLine("Decrypting message...");
+    for(uint i = 0; i < message.Length; i++) {
       IntX powop = power(message[i], key_d);
-      byte t = (byte) IntX.Modulo(powop, key_n, DivideMode.AutoNewton);
+      IntX t = (powop % key_n);
       output[i] = t;
-      //Console.WriteLine(output[i]);
     }
     return output;
   }
 
   public static void Main() {
       string[] args = Environment.GetCommandLineArgs();
-      //Dictionary<string, string> paths = getopt(args);
       string filePath = args[1];
 
       byte[] file = readFile(filePath);
-      byte[] encrypted = encrypt(file, 143, 7);
-
-      string enc = Convert.ToBase64String(encrypted);
-      Console.WriteLine(enc);
+      IntX[] encrypted = encrypt(file, Int64.Parse(args[2]), Int64.Parse(args[3]));
       Console.Write("--------------------------\n");
 
-      byte[] dec = Convert.FromBase64String(enc);
-      byte[] decrypted = decrypt(dec, 103, 143);
+      //byte[] dec = Convert.FromBase64String(enc);
+      IntX[] decrypted = decrypt(encrypted, Int64.Parse(args[2]), Int64.Parse(args[4]));
 
       for(int i = 0; i < decrypted.Length; i++) {
         Console.Write((char) decrypted[i]);
       }
-
-      Console.WriteLine(dec);
-
-      //string armored = Convert.ToBase64String(key);
-      //Console.WriteLine(armored);
 
   }
 }
