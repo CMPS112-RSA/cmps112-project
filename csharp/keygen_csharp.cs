@@ -132,7 +132,7 @@ public static bool isPrime_new(IntX num) {
     }
   }
 
-  public static void writeKeys(IntX n, IntX e, IntX d, string pubPath, string privPath) {
+  public static void writeKeys(IntX n, IntX e, IntX d, string privPath, string pubPath) {
     string[] pub = new string[2];
     pub[0] = n.ToString();
     pub[1] = e.ToString();
