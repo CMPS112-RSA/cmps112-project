@@ -1,0 +1,17 @@
+KEY FORMAT
+
+Both private and public key files are made up of two lines, containing their relevant numbers in ASCII form, as follows:
+
+Private key:
+
+N
+D
+
+Public key:
+
+N
+E
+
+ENCRYPTED FILE FORMAT
+
+When a file is encrypted, each byte is converted to a large number based on the public key. Each byte's corresponding value is printed in the encrypted in file in ASCII form, one line per byte.
