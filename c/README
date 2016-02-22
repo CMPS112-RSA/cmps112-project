@@ -1,0 +1,14 @@
+This directory contains this project's C implementation. To build it, you will need to install the following:
+
+* CMake
+* GNU Multiple Precision Library (GMP)
+
+On Ubuntu and other Debian-based distributions, the following command will install both:
+sudo apt-get install cmake libgmp-dev
+
+On CentOS and other Red Hat-based distributions, the following command will install both:
+sudo yum install cmake gmp-devel
+
+On other UNIX-like platforms, both of these projects are likely included in their respective package distribution systems.
+
+Note that this implementation does not work on Windows platforms.
