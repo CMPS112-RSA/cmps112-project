@@ -82,5 +82,5 @@ int main(int argc, char** argv) {
         mpz_clear(pubkey.e);
         mpz_clear(privkey.n);
 
-    return 0;
+    return status_code;
 }
