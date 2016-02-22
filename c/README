@@ -1,7 +1,7 @@
 This directory contains this project's C implementation.
 
 ------------------------
-BUILD INFORMATION
+DEPENDENCIES
 ------------------------
 
 To build it, you will need to install the following:
@@ -18,6 +18,30 @@ sudo yum install cmake gmp-devel
 On other UNIX-like platforms, both of these projects are likely included in their respective package distribution systems.
 
 Note that this implementation does not work on Windows platforms.
+
+------------------------
+BUILD INFORMATION
+------------------------
+
+Once everything is installed, run the following commands to build the utilities:
+
+mkdir build
+cd build
+cmake ..
+make
+
+------------------------
+RUNNING UTILITIES
+------------------------
+
+To run the key generation utility, run the program as follows (from your build directory), substituting your own files:
+
+keygen/rsa-keygen-c (private key filename) (public key filename)
+
+To run the encryption/decryption utility, run the program as follows:
+
+To encrypt: msg-crypt/rsa-c -e -i (input file) -o (output encrypted file) -k (public key file)
+To decrypt: msg-crypt/rsa-c -d -i (input encrypted file) -o (output file) -k (private key file)
 
 ------------------------
 GMP API INFORMATION
