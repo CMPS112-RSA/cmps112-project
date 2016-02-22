@@ -1,6 +1,6 @@
 -- Ryan Coley
 -- rsa-keygen-haskell.hs
--- Generates RSA keys
+-- Generates valid RSA keys
 -- rsa-keygen-haskell [private] [public]
 
 import System.Random
@@ -26,7 +26,6 @@ genPrime seed = primeNums!!select where select = genRandom seed
 
 genE :: Integer -> Integer
 genE totient = [ e | e <- [2..totient], (gcd totient e) == 1]!!0
-
 
 {- Got this code from http://rosettacode.org/wiki/Modular_inverse#Haskell and modified it to fit my needs -}
 gcdExt :: Integer -> Integer -> (Integer, Integer, Integer)

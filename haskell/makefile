@@ -10,8 +10,8 @@ test-keygen: keygen
 	cat private
 
 test-rsa: rsa test-keygen
-	rsa-haskell encrypt -k public -f README.md -o encryptedTestFile.enc
-	rsa-haskell decrypt -k private -f encryptedTestFile.enc -o encryptedTestFile.md
+	rsa-haskell encrypt -k public -i README.md -o encryptedTestFile.enc
+	rsa-haskell decrypt -k private -i encryptedTestFile.enc -o encryptedTestFile.md
 	cat encryptedTestFile.md
 
 clean:
