@@ -8,5 +8,5 @@ SET(srcs
     calc.c
     main.c
 )
-ADD_EXECUTABLE(rsa-keygen ${srcs})
-TARGET_LINK_LIBRARIES(rsa-keygen cmps112-rsa ${GMP_LIBRARIES} m)
+ADD_EXECUTABLE(rsa-keygen-c ${srcs})
+TARGET_LINK_LIBRARIES(rsa-keygen-c cmps112-rsa ${GMP_LIBRARIES} m)

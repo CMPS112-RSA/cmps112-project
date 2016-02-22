@@ -8,5 +8,5 @@ SET(srcs
     crypt.c
     main.c
 )
-ADD_EXECUTABLE(rsa-msg-crypt ${srcs})
-TARGET_LINK_LIBRARIES(rsa-msg-crypt cmps112-rsa ${GMP_LIBRARIES})
+ADD_EXECUTABLE(rsa-c ${srcs})
+TARGET_LINK_LIBRARIES(rsa-c cmps112-rsa ${GMP_LIBRARIES})
