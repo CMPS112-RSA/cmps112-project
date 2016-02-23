@@ -51,7 +51,7 @@ optionHandler :: RSA -> IO ()
 optionHandler opts@Encrypt{key = key, input = input, output = output}  = do
    --command line error checking
    when (key == "") $ error "Key must be specified"
-   when (input == "") $ error "File must be specified"
+   when (input == "") $ error "Input must be specified"
    when (output == "") $ error "Output must be specified"
 
    --get the key
@@ -70,7 +70,7 @@ optionHandler opts@Encrypt{key = key, input = input, output = output}  = do
 optionHandler opts@Decrypt{key = key, input = input, output = output}  = do
    --command line error checking
    when (key == "") $ error "Key must be specified"
-   when (input == "") $ error "File must be specified"
+   when (input == "") $ error "Input must be specified"
    when (output == "") $ error "Output must be specified"
 
    --get the key
