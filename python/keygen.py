@@ -56,8 +56,12 @@ def usage():
 def main():
 
     # Take in command line arguments
-    private = sys.argv[1]
-    public = sys.argv[2]
+    if (len(sys.argv) != 3):
+        usage()
+        sys.exit(0)
+    else:
+        private = sys.argv[1]
+        public = sys.argv[2]
 
     # Set prime values
     p = largePrime()
