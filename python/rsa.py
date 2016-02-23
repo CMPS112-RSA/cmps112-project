@@ -25,7 +25,6 @@ def decrypt(encrypted_bytes):
     for byte in encrypted_bytes:
         #array.append((int(byte) ** d) % n)
         array.append(modExp(int(byte), d, n))
-        print(modExp(int(byte), d, n))
     return array
 
 
