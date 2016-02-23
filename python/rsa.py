@@ -54,7 +54,7 @@ def main():
     out_file = ""
 
     if not len(sys.argv[1:]):
-        print ("Specify arguments")
+        usage()
         sys.exit(0)
 
     try:
@@ -77,7 +77,7 @@ def main():
         elif opt in ("-o", "--output"):
             out_file = arg
         else:
-            assert False, "Incorrect Opt"
+            assert False, usage()
 
     # Check for valid set of options
     if not in_file=="" and not out_file=="" and len(keyValues(key)) == 2 and encrypt_opt != decrypt_opt:
@@ -119,7 +119,7 @@ def main():
             fw.write("".join(map(chr, decrypted)))
             fw.close()
     else:
-        print("Invalid Set of arguments")
+        usage()
         sys.exit(0)
 
 main()

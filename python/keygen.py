@@ -50,6 +50,8 @@ def modinv(a, m):
     else:
         return x % m
 
+def usage():
+    print("python keygen.py privName pubName")
 
 def main():
 
