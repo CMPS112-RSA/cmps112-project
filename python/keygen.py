@@ -2,12 +2,14 @@ import random
 import os.path
 import sys
 
+
 # Generate two large primes
 def largePrime():
     while True:
-        p = random.randrange(101, 1000, 2)
+        p = random.randrange(1000000001, 10000000000, 2)
         if all(p % n != 0 for n in range(3, int((p ** 0.5) + 1), 2)):
             return p
+
 
 # Find the greatest common denominator between two integers
 def gcd(a, b):
@@ -23,15 +25,12 @@ def gcd(a, b):
                 return gcd(b, a % b)
 
 
-# Compute e value which satisfies 1 < e < phi(n) && gcd(e, phi(n)) == 1
+# Find e value which satisfies 1 < e < phi(n) && gcd(e, phi(n)) == 1
 def find_e(n):
-    e = 0
-    for i in range(2, n):
-        if gcd(n, i) == 1:
-            e = i
-            break
-    return e
-
+    while True:
+        e = random.randrange(1, n)
+        if (gcd(e, n) == 1):
+            return e
 
 # Apply Euler's extended GCD alg
 def egcd(a, b):
@@ -39,7 +38,7 @@ def egcd(a, b):
         return (b, 0, 1)
     else:
         g, y, x = egcd(b % a, a)
-        return (g, x - (b // a) * y, y)
+        return g, x - (b // a) * y, y
 
 
 # Find the modular inverse

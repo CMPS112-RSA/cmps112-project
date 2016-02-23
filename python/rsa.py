@@ -15,7 +15,7 @@ def read_into_buffer(filename):
 def encrypt(byte_array):
     array = []
     for byte in byte_array:
-        array.append((int(byte) ** e) % n)
+        array.append(modExp(int(byte), e, n))
     return array
 
 
@@ -23,7 +23,9 @@ def encrypt(byte_array):
 def decrypt(encrypted_bytes):
     array = []
     for byte in encrypted_bytes:
-        array.append((int(byte) ** d) % n)
+        #array.append((int(byte) ** d) % n)
+        array.append(modExp(int(byte), d, n))
+        print(modExp(int(byte), d, n))
     return array
 
 
@@ -34,6 +36,22 @@ def keyValues(file):
     for i, val in enumerate(values):
         values[i] = int(val)
     return values
+
+#We define a function f(x,e,m) whose return value is x^e % m
+
+def modExp(x,e,m):
+    X = x
+    E = e
+    Y = 1
+    while E > 0:
+        if E % 2 == 0:
+            X = (X * X) % m
+            E = E/2
+        else:
+            Y = (X * Y) % m
+            E = E - 1
+    return Y
+
 
 def usage():
     print("python rsa.py -e -d -i in -o out -k key")
