@@ -1,10 +1,11 @@
 import random
 import os.path
+import sys
 
 
 def largePrime():
     while True:
-        p = random.randrange(1001, 10000, 2)
+        p = random.randrange(101, 1000, 2)
         if all(p % n != 0 for n in range(3, int((p ** 0.5) + 1), 2)):
             return p
 
@@ -48,6 +49,8 @@ def modinv(a, m):
 
 
 def main():
+    private = sys.argv[1]
+    public = sys.argv[2]
 
     p = largePrime()
     q = largePrime()
@@ -63,14 +66,13 @@ def main():
     print("E: "+str(e))
     print("D: "+str(d))
 
-
-    fw = open(os.getcwd()+"/pub_key", 'w')
-    fw.write(str(e)+"\n")
-    fw.write(str(n))
+    fw = open(os.getcwd()+"/"+public, 'w')
+    fw.write(str(n)+"\n")
+    fw.write(str(e))
     fw.close()
-    fw = open(os.getcwd()+"/priv_key", 'w')
+    fw = open(os.getcwd()+"/"+private, 'w')
+    fw.write(str(n)+"\n")
     fw.write(str(d))
     fw.close
-
 
 main()

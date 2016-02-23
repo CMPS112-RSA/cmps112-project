@@ -2,37 +2,45 @@ import sys
 import getopt
 import os.path
 
+
 def read_into_buffer(filename):
     buf = bytearray(os.path.getsize(filename))
     with open(filename, 'rb') as f:
          f.readinto(buf)
     return buf
 
+
 def encrypt(byte_array):
     array = []
     for byte in byte_array:
-        array.append((byte ** e) % n)
+        array.append((int(byte) ** e) % n)
     return array
+
 
 def decrypt(encrypted_bytes):
     array = []
     for byte in encrypted_bytes:
-        array.append((byte ** d) % n)
+        array.append((int(byte) ** d) % n)
     return array
 
+
+def keyValues(file):
+    fr = open(os.getcwd()+"/"+file, "r")
+    values = fr.read().split("\n")
+    for i, val in enumerate(values):
+        values[i] = int(val)
+    return values
+
+
 def main():
-    # global decrypt_opt
-    # global encrypt_opt
-    # global string
-    # global key
-    # global in_file
-    # global out_file
+
     global n
     global e
     global d
 
     decrypt_opt = False
     encrypt_opt = False
+    key = []
     in_file = ""
     out_file = ""
 
@@ -41,7 +49,7 @@ def main():
         sys.exit(0)
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "dek:i:s:o:", ["decrypt", "encrypt", "key", "input", "string", "output"])
+        opts, args = getopt.getopt(sys.argv[1:], "dek:i:o:", ["decrypt", "encrypt", "key", "input", "output"])
 
     except getopt.GetoptError as error:
         print(error)
@@ -51,41 +59,67 @@ def main():
         if opt in ("-d", "--decrypt"):
             decrypt_opt = True
         elif opt in ("-e", "--encrypt"):
-            print('test')
             encrypt_opt = True
         elif opt in ("-k", "--key"):
             key = arg
         elif opt in ("-i", "--input"):
             in_file = arg
-        elif opt in ("-s", "--string"):
-            string = arg
         elif opt in ("-o", "--output"):
             out_file = arg
         else:
             assert False, "Incorrect Opt"
 
 
-    # encrpyt
-    # c = M^e mod n
 
-    # decrpyt
-    # M = c^d mod n
+    # n = 143
+    # e = 7    # pub
+    # d = 103  # priv
 
-    n = 143
-    e = 7    # pub
-    d = 103  # priv
 
-    if not in_file=="" and not out_file=="":
+
+    print(in_file)
+    print(out_file)
+    print(keyValues(key))
+    print(len(keyValues(key)))
+    print(encrypt_opt)
+    print(decrypt_opt)
+    if not in_file=="" and not out_file=="" and len(keyValues(key)) == 2 and encrypt_opt != decrypt_opt:
         if encrypt_opt:
-            encrypted = bytearray(encrypt(read_into_buffer(in_file)))
+
+            n = keyValues(key)[0]
+            e = keyValues(key)[1]
+
+            encrypted = encrypt(read_into_buffer(in_file))
             fw = open(os.getcwd()+"/"+out_file, 'w')
-            fw.write(encrypted)
+
+            fw.write(str(n)+"\n")
+            for i, val in enumerate(encrypted):
+                if (i == len(encrypted)-1):
+                    fw.write(str(val))
+                else:
+                    fw.write(str(val)+"\n")
+
+
+
             fw.close()
+
         if decrypt_opt:
-            decrypted  = bytearray(decrypt(read_into_buffer(in_file)))
+
+            n = keyValues(key)[0]
+            d = keyValues(key)[1]
+
+            vals = open(os.getcwd()+"/"+in_file).read().split("\n")
+            print(vals)
+            decrypted  = bytearray(decrypt(vals))
             fw = open(os.getcwd()+"/"+out_file, 'w')
-            fw.write(decrypted)
+            # for line in decrypted:
+            #     fw.write(str(line)+" - ")
+            fw.write("".join(map(chr, decrypted)))
             fw.close()
+    else:
+        print("Invalid Set of arguments")
+        sys.exit(0)
+
 main()
 
 
