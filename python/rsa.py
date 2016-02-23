@@ -3,6 +3,7 @@ import getopt
 import os.path
 
 
+# Read each char and store as byte in array
 def read_into_buffer(filename):
     buf = bytearray(os.path.getsize(filename))
     with open(filename, 'rb') as f:
@@ -10,6 +11,7 @@ def read_into_buffer(filename):
     return buf
 
 
+# Perform arithmetic on byte to "encrypt"
 def encrypt(byte_array):
     array = []
     for byte in byte_array:
@@ -17,6 +19,7 @@ def encrypt(byte_array):
     return array
 
 
+# Perform arithmetic on int value to decrypt
 def decrypt(encrypted_bytes):
     array = []
     for byte in encrypted_bytes:
@@ -24,6 +27,7 @@ def decrypt(encrypted_bytes):
     return array
 
 
+# Extract key values of file
 def keyValues(file):
     fr = open(os.getcwd()+"/"+file, "r")
     values = fr.read().split("\n")
@@ -31,7 +35,12 @@ def keyValues(file):
         values[i] = int(val)
     return values
 
+def usage():
+    print("python rsa.py -e -d -i in -o out -k key")
+    print("python rsa.py --encrypt --decrypt --input in --output out --key key")
 
+
+# Allows user to encrypt and decrypt a file using a public or private key
 def main():
 
     global n
@@ -55,6 +64,7 @@ def main():
         print(error)
         sys.exit(0)
 
+    # Check for flags
     for opt, arg in opts:
         if opt in ("-d", "--decrypt"):
             decrypt_opt = True
@@ -69,51 +79,43 @@ def main():
         else:
             assert False, "Incorrect Opt"
 
-
-
-    # n = 143
-    # e = 7    # pub
-    # d = 103  # priv
-
-
-
-    print(in_file)
-    print(out_file)
-    print(keyValues(key))
-    print(len(keyValues(key)))
-    print(encrypt_opt)
-    print(decrypt_opt)
+    # Check for valid set of options
     if not in_file=="" and not out_file=="" and len(keyValues(key)) == 2 and encrypt_opt != decrypt_opt:
         if encrypt_opt:
 
+            # Grab values from public key
             n = keyValues(key)[0]
             e = keyValues(key)[1]
 
+            # Encrypt bute values
             encrypted = encrypt(read_into_buffer(in_file))
+
+            # Open output file for writing
             fw = open(os.getcwd()+"/"+out_file, 'w')
 
+            # Create encrypted file using n value and encrypted data
             fw.write(str(n)+"\n")
             for i, val in enumerate(encrypted):
                 if (i == len(encrypted)-1):
                     fw.write(str(val))
                 else:
                     fw.write(str(val)+"\n")
-
-
-
             fw.close()
 
         if decrypt_opt:
 
+            # Grab values from public key
             n = keyValues(key)[0]
             d = keyValues(key)[1]
 
+            # Read encrypted file and store values into an array
             vals = open(os.getcwd()+"/"+in_file).read().split("\n")
-            print(vals)
+
+            # Decrypt vals
             decrypted  = bytearray(decrypt(vals))
+
+            # Open output file for writing
             fw = open(os.getcwd()+"/"+out_file, 'w')
-            # for line in decrypted:
-            #     fw.write(str(line)+" - ")
             fw.write("".join(map(chr, decrypted)))
             fw.close()
     else:
@@ -121,12 +123,3 @@ def main():
         sys.exit(0)
 
 main()
-
-
-#
-# bytes = read_into_buffer('/Users/ajanakos/cmps112/cmps112-project/python/input')
-#
-# print (bytearray(encrypt(bytes)))
-#
-# print (bytearray(decrypt(encrypt(bytes))))
-
