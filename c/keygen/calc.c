@@ -33,11 +33,11 @@ static bool is_prime(const uint32_t num) {
     }
 
     // Only check odd numbers for primality
-    uint32_t start_num = num / 2;
-    if(start_num % 2 == 0) {
-        start_num--;
+    uint32_t end_num = num / 2;
+    if(end_num % 2 == 0) {
+        end_num--;
     }
-    for(uint32_t i = start_num; (i > 1 && i <= start_num); i -= 2) {
+    for(uint32_t i = 543; i <= end_num; i += 2) {
         if(num % i == 0) {
             return false;
         }
