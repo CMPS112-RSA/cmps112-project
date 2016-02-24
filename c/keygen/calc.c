@@ -11,7 +11,7 @@
 #include <unistd.h>
 
 // https://primes.utm.edu/lists/small/1000.txt
-static const uint32_t smallest_primes[] = {
+static const uint64_t smallest_primes[] = {
     2,3,5,7,11,13,17,19,23,29,
     31,37,41,43,47,53,59,61,67,71,
     73,79,83,89,97,101,103,107,109,113,
@@ -24,26 +24,12 @@ static const uint32_t smallest_primes[] = {
     467,479,487,491,499,503,509,521,523,541
 };
 
-static bool is_prime(const uint32_t num) {
-    // See if this is factorable by the smallest 100 primes
-    for(size_t i = 0; i < 100; i++) {
-        if(num % smallest_primes[i] == 0) {
-            return false;
-        }
-    }
-
-    // Only check odd numbers for primality
-    uint32_t end_num = num / 2;
-    if(end_num % 2 == 0) {
-        end_num--;
-    }
-    for(uint32_t i = 543; i <= end_num; i += 2) {
-        if(num % i == 0) {
-            return false;
-        }
-    }
-
-    return true;
+static inline bool is_prime(const uint64_t num) {
+    mpz_t gmp_num;
+    mpz_init_set_ui(gmp_num, num);
+    int ret = mpz_probab_prime_p(gmp_num, 50);
+    mpz_clear(gmp_num);
+    return (ret == 0);
 }
 
 /*
@@ -52,9 +38,9 @@ static bool is_prime(const uint32_t num) {
  * /dev/urandom isn't as secure as /dev/random, but it's faster and
  * works for our purposes.
  */
-static uint32_t get_random_number() {
+static uint64_t get_random_number() {
     int fd;
-    uint32_t ret = 0;
+    uint64_t ret = 0;
 
     if((fd = open("/dev/urandom", O_RDONLY)) == -1) {
         fprintf(stderr, "failed to open /dev/urandom. Using rand() instead...");
@@ -63,7 +49,7 @@ static uint32_t get_random_number() {
     }
     // Don't accept numbers < 10 million
     while(ret < 10000000) {
-        read(fd, &ret, 4);
+        read(fd, &ret, 8);
     }
     close(fd);
 
@@ -71,7 +57,7 @@ static uint32_t get_random_number() {
 }
 
 void get_prime(mpz_t out) {
-    uint32_t num = 0;
+    uint64_t num = 0;
     do {
         num = get_random_number();
     } while(!is_prime(num));

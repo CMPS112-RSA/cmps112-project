@@ -92,7 +92,7 @@ int main(int argc, char* argv[]) {
             return_code = EXIT_FAILURE;
             goto free_arg_strings;
         }
-        printf("Private key imported.\n");
+        printf("Public key imported.\n");
 
         // Encryption
         if(encrypt_message(input_filename, output_filename, &privkey)) {
@@ -108,7 +108,7 @@ int main(int argc, char* argv[]) {
             return_code = EXIT_FAILURE;
             goto free_arg_strings;
         }
-        printf("Public key imported.\n");
+        printf("Private key imported.\n");
 
         // Decryption
         if(decrypt_message(input_filename, output_filename, &pubkey)) {
