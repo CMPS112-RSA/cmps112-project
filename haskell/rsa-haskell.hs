@@ -15,8 +15,8 @@ import System.Console.CmdArgs
 
 --read process the key
 readKey :: String -> (Integer,Integer)
-readKey key = (keyN,keyPow) where keyN = stringToInteger splitted!!0
-                                  keyPow = stringToInteger splitted!!1
+readKey key = (keyN,keyPow) where keyN = read (splitted!!0) :: Integer
+                                  keyPow = read (splitted!!1) :: Integer
                                   splitted = DLS.splitOn "\n" key
 
 {-Borrowed code http://rosettacode.org/wiki/Modular_exponentiation#Haskell-}
@@ -26,6 +26,14 @@ powm b 0 m r = r
 powm b e m r | e `mod` 2 == 1 = powm (b * b `mod` m) (e `div` 2) m (r * b `mod` m)
 powm b e m r = powm (b * b `mod` m) (e `div` 2) m r
 {-End-}
+
+{-Quick Exponentiation-}
+expQ :: Integer -> Integer -> Integer
+expQ x n | n == 1 = x
+         | n == 0 = 1
+         | n == 2 = x * x
+         | mod n 2 == 0 = expQ (expQ x (div n 2)) 2
+         | otherwise = x * (expQ (expQ x (div (n-1) 2)) 2)
 
 -- Command Line Argument Parsing
 data RSA = Encrypt {key :: String, input :: String, output :: String}
@@ -62,7 +70,7 @@ optionHandler opts@Encrypt{key = key, input = input, output = output}  = do
    inputFile <- BL.readFile input
 
    --encrypt
-   Prelude.mapM (\x -> Prelude.appendFile output ((show (mod ((toInteger x)^keyE) keyN) ++ "\n"))) (BL.unpack inputFile)
+   Prelude.mapM (\x -> Prelude.appendFile output ((show (mod (expQ (toInteger x) keyE) keyN) ++ "\n"))) (BL.unpack inputFile)
 
    SIO.putStrLn "Encryption Finished"
 

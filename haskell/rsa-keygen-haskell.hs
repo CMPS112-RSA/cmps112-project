@@ -6,20 +6,13 @@
 import System.Random
 import Data.Word
 import System.Environment
-
-divisors :: Integer -> [Integer]
-divisors 1 = [1]
-divisors x = 1:[ y | y <- [3,5..(div x 2)], mod x y == 0] ++ [x]
-
-isPrime :: Integer -> Bool
-isPrime x | mod x 2 == 0 = False
-          | otherwise = divisors x == [1,x]
+import Math.NumberTheory.Primes.Testing
 
 genRandom :: StdGen -> Int
 genRandom seed = (read (show prime) :: Int) where prime = (randoms seed :: [Word16])!!0
 
 primeNums :: [Integer]
-primeNums = [ x | x <- [3..1000000], isPrime x]
+primeNums = [ x | x <- [3..], isPrime x]
 
 genPrime :: StdGen -> Integer
 genPrime seed = primeNums!!select where select = genRandom seed
