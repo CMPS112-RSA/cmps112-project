@@ -1,12 +1,14 @@
 # Haskell
 dist
 cabal-dev
+*.txt
 *.o
 *.hi
 *.chi
 *.chs.h
 *.dyn_o
 *.dyn_hi
+rsa
 .hpc
 .hsenv
 .cabal-sandbox/
