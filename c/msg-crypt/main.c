@@ -11,6 +11,9 @@
 #include <string.h>
 
 void print_help() {
+    printf("rsa-c Usage:\n");
+    printf("Encrypting: rsa-c -e -k <public key file> -i <input file> -o <encrypted output file>\n");
+    printf("Decrypting: rsa-c -d -k <private key file> -i <encrypted file> -o <decrypted output file>\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -28,7 +31,7 @@ int main(int argc, char* argv[]) {
     rsa_private_key_t privkey;
     rsa_public_key_t pubkey;
 
-    while((option = getopt(argc, argv, "dei:o:k:")) != -1) {
+    while((option = getopt(argc, argv, "dei:o:k:h")) != -1) {
         switch(option) {
             case 'd':
                 decrypt = true;
@@ -49,6 +52,11 @@ int main(int argc, char* argv[]) {
             case 'k':
                 key_filename = strdup(optarg);
                 break;
+
+            case 'h':
+                print_help();
+                return_code = EXIT_SUCCESS;
+                goto free_arg_strings;
 
             default:
                 print_help();
