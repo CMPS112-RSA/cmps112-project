@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class rsa_csharp {
+
+  //This is the option parser.  Writing one was easier than using provided ones.
+  //---------------------------------------------------------------------------
   public static readonly string[] options = {"-i", "-o", "-k"};
   public static readonly string[] s = {"-e", "-d"};
   public static byte[] readFile(string name) {
@@ -40,7 +43,10 @@ public class rsa_csharp {
     }
     return parsed;
   }
+  //---------------------------------------------------------------------------
 
+
+  //Fast exponentiation function.  Consulted Wikipedia.
   public static IntX power(IntX x, IntX n) {
     if(n < 0) {
       x = 1 / x;
@@ -63,45 +69,19 @@ public class rsa_csharp {
     return x * y;
   }
 
-  public static bool odd(IntX a) {
-    if(a == 1) {
-      return true;
-    }else if(a == 0) {
-      return true;
-    }
-    if(a % 2 == 0) {
-      return true;
-    }else {
-      return false;
-    }
-  }
-
-  public static IntX fastPower(IntX a, IntX n, IntX m) {
-    IntX x = a;
-    IntX y = (odd(n)) ? a : 1;
-    IntX nprime = n / 2;
-    while (nprime > 0) {
-      x = power(x, 2) % m;
-      if(odd(nprime)) {
-        y = (y==1) ? x : (y*x) % m;
-      }
-      nprime = nprime / 2;
-    }
-    return y;
-  }
-
+  //Core encryption function
   public static IntX[] encrypt(byte[] message, IntX key_n, IntX key_e) {
     IntX[] output = new IntX [message.Length];
     for(uint i = 0; i < message.Length; i++) {
       IntX powop = power((IntX) message[i], key_e);
       IntX t = powop % key_n;
-      //Console.WriteLine(t);
       output[i] = t;
 
     }
     return output;
   }
 
+  //Core decryption function
   public static IntX[] decrypt(IntX[] message, IntX key_n, IntX key_d) {
     IntX[] output = new IntX[message.Length];
     Console.WriteLine("Decrypting message...");
@@ -114,6 +94,7 @@ public class rsa_csharp {
     return output;
   }
 
+  //Writes encrypted data to file.
   public static void writeToFile(IntX[] encrypted, string path, IntX key_n, IntX key_d ) {
     string[] output = new string[encrypted.Length+2];
     output[0] = key_n.ToString();
@@ -128,6 +109,7 @@ public class rsa_csharp {
     System.IO.File.WriteAllLines(path, output);
   }
 
+  //Writes decrypted data to file.
   public static void writeDecToFile(string path, IntX[] file) {
     byte[] output = new byte[file.Length];
     for(int b = 0; b < output.Length; b++) {
@@ -142,6 +124,7 @@ public class rsa_csharp {
     //File.WriteAllBytes(path, output);
   }
 
+  //Converts string to an IntX bigInteger
   public static IntX stringToInt(string str) {
     int power = 0;
     IntX sum = 0;
@@ -152,6 +135,7 @@ public class rsa_csharp {
     return sum;
   }
 
+  //Reads in a file and decrypts its contents.
   public static IntX[] decryptfromFile(string path, IntX key_e) {
     int lineCount = File.ReadLines(path).Count();
     IntX[] fromFile = new IntX[lineCount];
@@ -176,6 +160,7 @@ public class rsa_csharp {
     return dec;
   }
 
+  //Reads a key from a file.
   public static IntX[] readKey(string path) {
     int lineCount = File.ReadLines(path).Count();
     IntX[] fromFile = new IntX[lineCount];
@@ -189,19 +174,24 @@ public class rsa_csharp {
   }
 
   public static void Main() {
+      //Get and parse command line arguments.
       string[] args = Environment.GetCommandLineArgs();
       Dictionary<string, string> parsed = getopt(args);
+      //Set input and output paths.
       string filePath = parsed["-i"];
       string outfile = parsed["-o"];
 
+      //Read key.
       IntX[] key = readKey(parsed["-k"]);
 
+      //Encrypt contents of input file
       if(parsed["-e"].Equals("True")){
         Console.WriteLine("Encrypting...");
         byte[] file = readFile(filePath);
         IntX[] encrypted = encrypt(file, key[0], key[1]);
         writeToFile(encrypted, outfile, key[0], key[1]);
 
+      //Decrypt contents of input file
       }else if(parsed["-d"].Equals("True")) {
         Console.WriteLine("Decrypting...");
         IntX[] decfile = decryptfromFile(filePath, key[1]);

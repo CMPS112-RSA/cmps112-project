@@ -15,8 +15,9 @@ class keygen_csharp {
     }
   }
 
+  //Generates a 32-bit random integer.
   public static IntX genRand() {
-    int size = 8;
+    int size = 32;
     IntX output = 0;
     for(int i = 0; i < size; i++) {
       ulong bit = (getBin() * (ulong) Math.Pow(2, i));
@@ -25,23 +26,26 @@ class keygen_csharp {
     return output;
   }
 
-public static bool isPrime_new(IntX num) {
-  if(num < 2) {
-    return false;
-  }
-  if(num == 2) {
-    return false;
-  }
-  if(num % 2 == 0) {
-    return false;
-  }
-  for(ulong i = 3; i <= Math.Sqrt( (ulong) num); i += 2) {
-    if(num % i == 0) {
+
+//Uses square root algorithm to figure this out.  Consulted Wikipedia for this.
+  public static bool isPrime_new(IntX num) {
+    if(num < 2) {
       return false;
     }
+    if(num == 2) {
+      return false;
+    }
+    if(num % 2 == 0) {
+      return false;
+    }
+    for(ulong i = 3; i <= Math.Sqrt( (ulong) num); i += 2) {
+      if(num % i == 0) {
+        return false;
+      }
+    }
+    return true;
   }
-  return true;
-}
+
   public static IntX genRandPrime(IntX index) {
       IntX p = 0;
       while(true) {
@@ -74,7 +78,6 @@ public static bool isPrime_new(IntX num) {
     IntX totient = (npq[0] - 1) * (npq[1] - 1);
 
     IntX output = 0;
-    //Console.WriteLine("Generating e...");
     for(IntX e = 2; e < totient; e++) {
       if(gcd(e, totient) == 1) {
         output = e;
@@ -84,8 +87,10 @@ public static bool isPrime_new(IntX num) {
     return output;
   }
 
-  public static IntX[] Extended_GCD(IntX a, IntX b)
-  {
+  //Extended GCD implementation.  Taken from:
+  //http://amir-shenodua.blogspot.com/2012/06/extended-gcd-algorithm-extended.html
+  //(Easier to copy than to figure out how to implement this in C#)
+  public static IntX[] Extended_GCD(IntX a, IntX b) {
       IntX[] result = new IntX[3];
       if (a < b) //if a less than b, switch them
       {
@@ -119,19 +124,19 @@ public static bool isPrime_new(IntX num) {
       return result;
   }
 
-  public static IntX modInverse(IntX a, IntX m)
-  {
+  //Modular inverse function.
+  //Consulted http://www.geeksforgeeks.org/modular-division/
+  public static IntX modInverse(IntX a, IntX m) {
     IntX[] g = Extended_GCD(a, m);
-    if (g.Length == 0)
-        return -1;
-    else
-    {
-        // m is added to handle negative x
+    if (g.Length == 0) {
+        return 0;
+    }else {
         IntX res = (g[2] % m + m) % m;
         return res;
     }
   }
 
+  //Writes keys to file
   public static void writeKeys(IntX n, IntX e, IntX d, string privPath, string pubPath) {
     string[] pub = new string[2];
     pub[0] = n.ToString();
