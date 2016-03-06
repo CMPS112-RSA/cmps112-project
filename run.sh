@@ -49,7 +49,7 @@ decrypt_driver "c" "./c/build/msg-crypt/rsa-c"
 print_header "Haskell"
 time ./haskell/rsa-haskell decrypt -i test.haskell.encrypt -o test.haskell.decrypt -k $REPO_DIR/test-files/key.priv
 print_header "Python"
-cd python && time python3 rsa.py -d -i test.python.encrypt -o test.python.decrypt -k $REPO_DIR/test-files/key.priv
+cd python && time python3 rsa.py -d -i test.python.encrypt -o test.python.decrypt -k ../test-files/key.priv
 cd ..
 
 print_header "Key generation tests - 32 bit primes"
