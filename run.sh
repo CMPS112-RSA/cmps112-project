@@ -1,6 +1,7 @@
 #!/bin/bash
 
 REPO_DIR=$PWD
+export MONO_PATH=$PWD/csharp/IntXLib/lib/net20/:$MONO_PATH
 
 print_header() {
   echo "++++++++++++++++++++++++++++++++++"
