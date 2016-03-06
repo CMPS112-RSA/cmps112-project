@@ -1,3 +1,5 @@
+all: rsa keygen
+
 rsa:
 	ghc -XDeriveDataTypeable rsa-haskell.hs
 
