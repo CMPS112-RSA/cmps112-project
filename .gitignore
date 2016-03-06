@@ -1,3 +1,21 @@
+# Build artifacts
+rsa-haskell
+rsa-keygen-haskell
+key.priv.Haskell
+key.priv.Python
+key.priv.c
+key.priv.csharp
+key.pub.Haskell
+key.pub.Python
+key.pub.c
+key.pub.csharp
+test.c.decrypt
+test.c.encrypt
+test.csharp.decrypt
+test.csharp.encrypt
+test.haskell.decrypt
+test.haskell.encrypt
+
 # Haskell
 dist
 cabal-dev
