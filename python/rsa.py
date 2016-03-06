@@ -33,11 +33,17 @@ def keyValues(file):
     fr = open(os.getcwd()+"/"+file, "r")
     values = fr.read().split("\n")
     for i, val in enumerate(values):
-        values[i] = int(val)
+        try:
+            values[i] = int(val)
+        except:
+            ValueError
+    if len(values) > 2:
+        values.pop()
     return values
 
-#We define a function f(x,e,m) whose return value is x^e % m
 
+# We define a function f(x,e,m) whose return value is x^e % m
+# Code taken from http://www.math.umn.edu/~garrett/crypto/Code/FastPow_Python.html
 def modExp(x,e,m):
     X = x
     E = e

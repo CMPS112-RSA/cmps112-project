@@ -6,7 +6,7 @@ import sys
 # Generate two large primes
 def largePrime():
     while True:
-        p = random.randrange(1000000001, 10000000000, 2)
+        p = random.randrange(2**31+1,  2**32, 2)
         if all(p % n != 0 for n in range(3, int((p ** 0.5) + 1), 2)):
             return p
 
