@@ -44,6 +44,7 @@ def egcd(a, b):
 
 
 # Find the modular inverse
+# Referenced from https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
 def modinv(a, m):
     gcd, x, y = egcd(a, m)
     if gcd != 1:
