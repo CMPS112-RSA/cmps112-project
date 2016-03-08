@@ -66,8 +66,8 @@ class keygen_csharp {
   //Generates p, q, and n.  Returns an array of p, q, and n in that order.
   public static IntX[] genN() {
     IntX[] output = new IntX[3];
-    output[0] = genRandPrime(1);
-    output[1] = genRandPrime(1);
+    output[0] = genRandPrime();
+    output[1] = genRandPrime();
     output[2] = output[0] * output[1];
 
     return output;
