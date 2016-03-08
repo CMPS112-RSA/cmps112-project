@@ -7,13 +7,15 @@ using System.Linq;
 
 public class rsa_csharp {
 
+  //Reads file.  Not sure why I wrote this since it was one line...
+  public static byte[] readFile(string name) {
+    return File.ReadAllBytes(name);
+  }
+
   //This is the option parser.  Writing one was easier than using provided ones.
   //---------------------------------------------------------------------------
   public static readonly string[] options = {"-i", "-o", "-k"};
   public static readonly string[] s = {"-e", "-d"};
-  public static byte[] readFile(string name) {
-    return File.ReadAllBytes(name);
-  }
 
   public static Dictionary <string, string> getopt(string[] args) {
     Dictionary<string, string> parsed = new Dictionary <string, string>();
@@ -46,7 +48,9 @@ public class rsa_csharp {
   //---------------------------------------------------------------------------
 
 
-  //Fast exponentiation function.  Consulted Wikipedia.
+  //Fast exponentiation function.  Consulted Wikipedia for this.
+  //Performs exponentiation by squaring.  Fewer operations needed than
+  //traditional exponentiation function.
   public static IntX power(IntX x, IntX n) {
     if(n < 0) {
       x = 1 / x;

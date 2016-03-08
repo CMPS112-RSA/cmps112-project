@@ -15,7 +15,7 @@ class keygen_csharp {
     }
   }
 
-  //Generates a 32-bit random integer.
+  //Generates a 32-bit (in size) random integer.
   public static IntX genRand() {
     int size = 32;
     IntX output = 0;
@@ -28,14 +28,10 @@ class keygen_csharp {
 
 
 //Uses square root algorithm to figure this out.  Consulted Wikipedia for this.
+//Checks if every odd until the square root of the number is a number.
+//No integer greater than the square root of a number can be a factor
   public static bool isPrime_new(IntX num) {
-    if(num < 2) {
-      return false;
-    }
-    if(num == 2) {
-      return false;
-    }
-    if(num % 2 == 0) {
+    if(num < 2 || num == 2 || num % 2) {
       return false;
     }
     for(ulong i = 3; i <= Math.Sqrt( (ulong) num); i += 2) {
@@ -46,7 +42,8 @@ class keygen_csharp {
     return true;
   }
 
-  public static IntX genRandPrime(IntX index) {
+  //Returns a random prime number.
+  public static IntX genRandPrime() {
       IntX p = 0;
       while(true) {
         p = genRand();
@@ -57,6 +54,7 @@ class keygen_csharp {
     return p;
   }
 
+  //Old GCD algorithm.
   public static IntX gcd(IntX a, IntX b) {
     if(b == 0) {
       return a;
@@ -65,6 +63,7 @@ class keygen_csharp {
     }
   }
 
+  //Generates p, q, and n.  Returns an array of p, q, and n in that order.
   public static IntX[] genN() {
     IntX[] output = new IntX[3];
     output[0] = genRandPrime(1);
@@ -74,6 +73,7 @@ class keygen_csharp {
     return output;
   }
 
+  //Generates the public key exponent.
   public static IntX genE(IntX[] npq) {
     IntX totient = (npq[0] - 1) * (npq[1] - 1);
 
