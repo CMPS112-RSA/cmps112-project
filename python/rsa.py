@@ -23,7 +23,6 @@ def encrypt(byte_array):
 def decrypt(encrypted_bytes):
     array = []
     for byte in encrypted_bytes:
-        #array.append((int(byte) ** d) % n)
         array.append(modExp(int(byte), d, n))
     return array
 
@@ -43,7 +42,7 @@ def keyValues(file):
 
 
 # We define a function f(x,e,m) whose return value is x^e % m
-# Code taken from http://www.math.umn.edu/~garrett/crypto/Code/FastPow_Python.html
+# Taken from http://www.math.umn.edu/~garrett/crypto/Code/FastPow_Python.html
 def modExp(x,e,m):
     X = x
     E = e

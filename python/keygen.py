@@ -32,7 +32,9 @@ def find_e(n):
         if (gcd(e, n) == 1):
             return e
 
+
 # Apply Euler's extended GCD alg
+# Taken from https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
 def egcd(a, b):
     if a == 0:
         return (b, 0, 1)
@@ -42,6 +44,7 @@ def egcd(a, b):
 
 
 # Find the modular inverse
+# Referenced from https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
 def modinv(a, m):
     gcd, x, y = egcd(a, m)
     if gcd != 1:
