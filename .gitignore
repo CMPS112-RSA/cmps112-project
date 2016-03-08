@@ -15,6 +15,8 @@ test.csharp.decrypt
 test.csharp.encrypt
 test.haskell.decrypt
 test.haskell.encrypt
+test.python.decrypt
+test.python.encrypt
 
 # Haskell
 dist
