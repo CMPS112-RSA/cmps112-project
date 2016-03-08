@@ -31,7 +31,7 @@ class keygen_csharp {
 //Checks if every odd until the square root of the number is a number.
 //No integer greater than the square root of a number can be a factor
   public static bool isPrime_new(IntX num) {
-    if(num < 2 || num == 2 || num % 2) {
+    if(num < 2 || num == 2 || num % 2 == 0) {
       return false;
     }
     for(ulong i = 3; i <= Math.Sqrt( (ulong) num); i += 2) {
