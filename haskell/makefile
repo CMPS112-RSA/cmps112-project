@@ -1,10 +1,10 @@
 all: rsa keygen
 
 rsa:
-	ghc -XDeriveDataTypeable rsa-haskell.hs
+	ghc -O2 -XDeriveDataTypeable rsa-haskell.hs -rtsopts
 
 keygen:
-	ghc rsa-keygen-haskell.hs
+	ghc -O2 rsa-keygen-haskell.hs -rtsopts
 
 test-keygen: keygen
 	./rsa-keygen-haskell private public
